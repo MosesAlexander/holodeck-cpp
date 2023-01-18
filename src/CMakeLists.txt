@@ -1,4 +1,5 @@
 add_executable(holodeck main.cpp
+                        Application.cpp
                         glad.c)
 
 project(holodeck)

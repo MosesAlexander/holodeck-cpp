@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 using namespace std;
 
@@ -14,6 +14,7 @@ public:
 private:
     GLFWwindow *window;
     int init_window();
+	bool is_initialized = false;
 };
 
 class application_exception: public std::runtime_error {
