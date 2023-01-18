@@ -1,6 +1,4 @@
-#include <iostream>
-
-using namespace std;
+#include "application.hpp"
 
 int main() {
 	cout<<"Hello world"<<endl;
