@@ -14,7 +14,7 @@ int Application::init_window() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	window = glfwCreateWindow(800, 600, "MyOpenGL", NULL, NULL);
+	window = glfwCreateWindow(1024, 768, "MyOpenGL", NULL, NULL);
 	if (window == NULL) {
 		std::cerr<<"Failed to create GLFW window" <<std::endl;
 		glfwTerminate();
@@ -33,7 +33,7 @@ int Application::init_window() {
 		goto err;
 	}
 
-	glViewport(0, 0, 800, 600);
+	glViewport(0, 0, 1024, 768);
 
 	// set callback so the glViewport re-adjust to window resizing
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
