@@ -11,9 +11,11 @@ public:
 	Application();
 	void render_loop();
 	~Application() { glfwTerminate(); }
+	void render_models();
 private:
     GLFWwindow *window;
     int init_window();
+	void process_input();
 	bool is_initialized = false;
 };
 

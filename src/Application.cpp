@@ -48,3 +48,20 @@ Application::Application() {
 		throw application_exception("Failed to initialize window");
 	}
 }
+
+void Application::render_models() {
+
+	while (!glfwWindowShouldClose(window)) {
+		glClear(GL_COLOR_BUFFER_BIT);
+		process_input();
+		
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+}
+
+void Application::process_input() {
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+		glfwSetWindowShouldClose(window, true);
+	}
+}
