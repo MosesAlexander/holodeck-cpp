@@ -21,7 +21,8 @@ target_include_directories(holodeck PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 
 #message("GLFW3_LIBRARY: ${GLFW_LIBRARY} INCLUDE_DIR: ${GLFW_INCLUDE_DIRS} OPENGL_INCLUDE_DIR: ${OPENGL_INCLUDE_DIR}")
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+message("Looking for cmake modules in: ${CMAKE_SOURCE_DIR}/cmake/")
 
 find_package(GLM REQUIRED)
 message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")
