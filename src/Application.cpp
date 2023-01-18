@@ -42,3 +42,9 @@ int Application::init_window() {
 err:
 	return ret;
 }
+
+Application::Application() {
+	if(init_window()) {
+		throw application_exception("Failed to initialize window");
+	}
+}
