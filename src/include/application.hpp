@@ -8,6 +8,7 @@ class Application
 {
 public:
     unsigned int var1;
-    Glfw glfw;
-    Window window;
+    GLFWwindow *
+    //Glfw glfw;
+    //Window window;
 };
