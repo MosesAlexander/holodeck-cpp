@@ -1,14 +1,22 @@
 #include <iostream>
 #include <vector>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 using namespace std;
 
 class Application
 {
 public:
-    unsigned int var1;
-    GLFWwindow *
-    //Glfw glfw;
-    //Window window;
+	Application();
+	void render_loop();
+	~Application() { glfwTerminate(); }
+private:
+    GLFWwindow *window;
+    int init_window();
+};
+
+class application_exception: public std::runtime_error {
+public:
+	application_exception(std::string const &msg): std::runtime_error(msg) {}
 };
