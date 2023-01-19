@@ -69,3 +69,7 @@ int VaoDescriptor::set_attributes(AttributesDescriptor *attr) {
         glEnableVertexAttribArray(attr_idx);
     }
 }
+
+void VaoDescriptor::attach_ebo(EboDescriptor *ebo) {
+    ebo_desc = ebo;
+}

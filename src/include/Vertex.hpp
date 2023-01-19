@@ -10,18 +10,18 @@
 struct Mesh {
     vector<float> vertices;
     vector<uint32_t> *indices;
-    vector<TextureDescriptor> textures;
+    vector<TextureDescriptor*> textures;
     vector<UniformDescriptor> uniforms;
-    BufferDescriptor *buffer;
-    VaoDescriptor vao;
-    EboDescriptor *ebo;
+    BufferDescriptor *m_buffer;
+    VaoDescriptor *m_vao;
+    EboDescriptor *m_ebo;
 
     Mesh(vector<float> *vertices, vector<uint32_t> *indices,
                         AttributesDescriptor *attr);
-    
+    ~Mesh();
     void bind_vao();
-    void add_uniform();
-    void add_texture();
+    void add_uniform(UniformDescriptor&& uniform);
+    void add_texture(TextureDescriptor *texture);
     void render();
 };
 

@@ -30,6 +30,7 @@ struct VaoDescriptor {
 
     template <typename T>
     int set_attributes(AttributesDescriptor *attr);
+    void attach_ebo(EboDescriptor *ebo);
 };
 
 #endif
