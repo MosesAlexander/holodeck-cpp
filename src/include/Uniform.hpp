@@ -35,4 +35,4 @@ struct UniformPackedParam {
 
 struct UniformDescriptor {
     GLint uniform_shader_handle;
-}
+};
