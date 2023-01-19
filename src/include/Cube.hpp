@@ -32,8 +32,8 @@ struct Cube {
     float center[3];
 
     Cube(float side_length, float *center);
-    vector<float> generate_texture_coords(TextureCorner texture_corner, ScaleFactor scale_factor);
-    vector<float> generate_cube_corner_coords(float *center_point, float side_length, CubeCorner cube_corner);
+    static vector<float> generate_texture_coords(TextureCorner texture_corner, ScaleFactor scale_factor);
+    static vector<float> generate_cube_corner_coords(float *center_point, float side_length, CubeCorner cube_corner);
 };
 
 #endif

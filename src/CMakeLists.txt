@@ -6,6 +6,7 @@ add_executable(holodeck main.cpp
                         Uniform.cpp
                         Vertex.cpp
                         Cube.cpp
+                        Quad.cpp
                         glad.c)
 
 project(holodeck)
