@@ -26,13 +26,16 @@ struct Uniform4FVMatrix {
 struct UniformPackedParam {
     uniform_type type;
     union {
-        Uniform3FParam param3f;
-        Uniform1IParam param1i;
-        Uniform1FParam param1f;
-        Uniform4FVMatrix parammat4;
+        float param3f[3];
+        int param1i;
+        float param1f;
+        float parammat4[16];
     };
 };
 
 struct UniformDescriptor {
     GLint uniform_shader_handle;
+
+    UniformDescriptor(GLuint program_id, char *uniform_name);
+    void update(UniformPackedParam *packed_param);
 };

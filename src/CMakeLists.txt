@@ -3,6 +3,7 @@ add_executable(holodeck main.cpp
                         Buffer.cpp
                         Program.cpp
                         Shader.cpp
+                        Uniform.cpp
                         glad.c)
 
 project(holodeck)
