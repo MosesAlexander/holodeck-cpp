@@ -1,4 +1,5 @@
-#include "Application.hpp"
+#ifndef UNIFORM_HEADERFILE_H
+#define UNIFORM_HEADERFILE_H
 
 enum class uniform_type {
     Uniform3FParam,
@@ -39,3 +40,5 @@ struct UniformDescriptor {
     UniformDescriptor(GLuint program_id, char *uniform_name);
     void update(UniformPackedParam *packed_param);
 };
+
+#endif

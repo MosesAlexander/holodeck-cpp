@@ -1,4 +1,8 @@
+#ifndef BUFFER_HEADERFILE_H
+#define BUFFER_HEADERFILE_H
+
 #include "Application.hpp"
+#include "Vertex.hpp"
 
 struct BufferDescriptor {
     GLuint buffer_id;
@@ -19,5 +23,11 @@ struct EboDescriptor {
 struct VaoDescriptor {
     GLuint vao_id;
     BufferDescriptor *buffer_ref;
-    EboDescriptor ebo_desc;
+    EboDescriptor *ebo_desc;
+
+    VaoDescriptor(AttributesDescriptor *attr, BufferDescriptor *buffer);
+    void bind();
+    int set_attributes(AttributesDescriptor *attr);
 };
+
+#endif

@@ -1,7 +1,10 @@
+#ifndef VERTEX_HEADERFILE_H
+#define VERTEX_HEADERFILE_H
+
 #include "Application.hpp"
-#include "Buffer.hpp"
 #include "Texture.hpp"
 #include "Uniform.hpp"
+#include "Buffer.hpp"
 #include "Program.hpp"
 
 struct Mesh {
@@ -26,3 +29,5 @@ struct AttributesDescriptor {
     vector<uint32_t> component_offsets;
     vector<GLint> component_strides;
 };
+
+#endif

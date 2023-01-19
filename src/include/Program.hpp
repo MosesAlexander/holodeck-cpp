@@ -1,3 +1,6 @@
+#ifndef PROGRAM_HEADERFILE_H
+#define PROGRAM_HEADERFILE_H
+
 #include "Shader.hpp"
 
 struct Program {
@@ -10,3 +13,4 @@ struct Program {
     int link_shaders();
 };
 
+#endif

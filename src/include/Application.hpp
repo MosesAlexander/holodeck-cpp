@@ -1,3 +1,6 @@
+#ifndef APP_HEADERFILE_H
+#define APP_HEADERFILE_H
+
 #include <iostream>
 #include <vector>
 #include <glad/glad.h>
@@ -27,3 +30,5 @@ class application_exception: public std::runtime_error {
 public:
 	application_exception(std::string const &msg): std::runtime_error(msg) {}
 };
+
+#endif
