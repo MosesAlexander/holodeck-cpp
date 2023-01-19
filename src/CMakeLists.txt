@@ -24,4 +24,4 @@ message(STATUS "Found GLFW3 in ${GLFW3_INCLUDE_DIR}")
 find_package(ASSIMP REQUIRED)
 message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
 
-target_link_libraries(holodeck PUBLIC glfw)
+target_link_libraries(holodeck PUBLIC glfw ${CMAKE_DL_LIBS})
