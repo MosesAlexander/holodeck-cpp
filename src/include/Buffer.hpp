@@ -1,8 +1,8 @@
 #ifndef BUFFER_HEADERFILE_H
 #define BUFFER_HEADERFILE_H
 
+#include "Attributes.hpp"
 #include "Application.hpp"
-#include "Vertex.hpp"
 
 struct BufferDescriptor {
     GLuint buffer_id;
@@ -27,6 +27,8 @@ struct VaoDescriptor {
 
     VaoDescriptor(AttributesDescriptor *attr, BufferDescriptor *buffer);
     void bind();
+
+    template <typename T>
     int set_attributes(AttributesDescriptor *attr);
 };
 

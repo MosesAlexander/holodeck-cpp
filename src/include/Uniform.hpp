@@ -1,6 +1,8 @@
 #ifndef UNIFORM_HEADERFILE_H
 #define UNIFORM_HEADERFILE_H
 
+#include "Application.hpp"
+
 enum class uniform_type {
     Uniform3FParam,
     Uniform1IParam,

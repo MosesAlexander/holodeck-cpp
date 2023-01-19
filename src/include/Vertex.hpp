@@ -1,10 +1,10 @@
 #ifndef VERTEX_HEADERFILE_H
 #define VERTEX_HEADERFILE_H
 
+#include "Buffer.hpp"
 #include "Application.hpp"
 #include "Texture.hpp"
 #include "Uniform.hpp"
-#include "Buffer.hpp"
 #include "Program.hpp"
 
 struct Mesh {
@@ -20,14 +20,6 @@ struct Mesh {
 struct Model {
     vector<Mesh> meshes;
     Program program;
-};
-
-struct AttributesDescriptor {
-    GLuint component_groups;
-    vector<GLint> component_nums;
-    vector<GLenum> component_types;
-    vector<uint32_t> component_offsets;
-    vector<GLint> component_strides;
 };
 
 #endif

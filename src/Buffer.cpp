@@ -41,7 +41,7 @@ VaoDescriptor::VaoDescriptor(AttributesDescriptor *attr,
     ebo_desc = nullptr;
 
     int ret = 0;
-    ret = set_attributes(attr);
+    ret = set_attributes<float>(attr);
     if(ret < 0) {
         cerr<<"Failure to set attributes to VAO"<<endl;
         throw application_exception("Failure to set attributes to VAO");
@@ -57,15 +57,15 @@ int VaoDescriptor::set_attributes(AttributesDescriptor *attr) {
     bind();
     buffer_ref->bind();
 
-    for (auto attr_idx : attr->component_groups) {
+    for (auto attr_idx = 0; attr_idx < attr->component_groups; attr_idx++) {
         glVertexAttribPointer(
             attr_idx,
             attr->component_nums[attr_idx],
             attr->component_types[attr_idx],
             GL_FALSE,
             attr->component_strides[attr_idx] * sizeof(T),
-            attr->component_offsets[attr_idx] * sizeof(T)
+            (const void *) (attr->component_offsets[attr_idx] * sizeof(T))
         );
-        glEnableVertexArrayAttrib(attr_idx);
+        glEnableVertexAttribArray(attr_idx);
     }
 }
