@@ -20,7 +20,7 @@ struct Uniform1FParam {
 };
 
 struct Uniform4FVMatrix {
-    Mat4 param;
+    //Mat4 param;
 };
 
 struct UniformPackedParam {

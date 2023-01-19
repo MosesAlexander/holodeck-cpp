@@ -2,6 +2,7 @@
 #include "Buffer.hpp"
 #include "Texture.hpp"
 #include "Uniform.hpp"
+#include "Program.hpp"
 
 struct Mesh {
     vector<float> vertices;
@@ -24,4 +25,4 @@ struct AttributesDescriptor {
     vector<GLenum> component_types;
     vector<uint32_t> component_offsets;
     vector<GLint> component_strides;
-}
+};

@@ -1,6 +1,8 @@
 add_executable(holodeck main.cpp
                         Application.cpp
                         Buffer.cpp
+                        Program.cpp
+                        Shader.cpp
                         glad.c)
 
 project(holodeck)
