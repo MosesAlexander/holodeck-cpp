@@ -72,4 +72,7 @@ int VaoDescriptor::set_attributes(AttributesDescriptor *attr) {
 
 void VaoDescriptor::attach_ebo(EboDescriptor *ebo) {
     ebo_desc = ebo;
+    buffer_ref->bind();
+    bind();
+    ebo_desc->bind();
 }
