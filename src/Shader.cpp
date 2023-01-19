@@ -1,6 +1,6 @@
 #include "Shader.hpp"
 
-Shader::Shader(string *source, GLenum kind) {
+Shader::Shader(const char *source, GLenum kind) {
     std::ifstream ShaderFile;
     string ShaderCode;
 
@@ -11,7 +11,7 @@ Shader::Shader(string *source, GLenum kind) {
     try 
     {
         // open files
-        ShaderFile.open(source->c_str());
+        ShaderFile.open(source);
         std::stringstream ShaderStream;
         // read file's buffer contents into streams
         ShaderStream << ShaderFile.rdbuf();

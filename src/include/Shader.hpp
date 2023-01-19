@@ -4,6 +4,6 @@ struct Shader {
     GLuint id;
     string source;
 
-    Shader(string *source, GLenum kind);
+    Shader(const char *source, GLenum kind);
     ~Shader();
 };
