@@ -1,5 +1,8 @@
 #include "Texture.hpp"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 TextureDescriptor::TextureDescriptor(GLuint bound_program_id,
                     char *shader_handle_name,
                     char *path,
@@ -23,4 +26,32 @@ TextureDescriptor::TextureDescriptor(GLuint bound_program_id,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+    stbi_set_flip_vertically_on_load(1);
+    uint8_t *buffer = stbi_load(
+        path,
+        &width,
+        &height,
+        &nr_channels,
+        0
+    );
+
+    if (!buffer) {
+        cerr<<"Failed to load texture!"<<endl;
+        throw application_exception("Failed to load texture!");
+    }
+
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        GL_RGB,
+        width,
+        height,
+        0,
+        format,
+        GL_UNSIGNED_BYTE,
+        (const void*) buffer
+    )
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+    stbi_image_free(buffer);
 }

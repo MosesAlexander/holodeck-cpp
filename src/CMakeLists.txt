@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD 17)
 message("holodeck current source dir = ${CMAKE_CURRENT_SOURCE_DIR}")
 
 target_include_directories(holodeck PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+                                    PUBLIC /usr/local/include/
                                     PUBLIC /usr/include/)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
