@@ -1,5 +1,5 @@
-#ifndef VERTEX_HEADERFILE_H
-#define VERTEX_HEADERFILE_H
+#ifndef ATTR_HEADERFILE_H
+#define ATTR_HEADERFILE_H
 
 #include "Application.hpp"
 
