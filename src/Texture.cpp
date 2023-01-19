@@ -55,3 +55,9 @@ TextureDescriptor::TextureDescriptor(GLuint bound_program_id,
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(buffer);
 }
+
+void TextureDescriptor::set_active_texture(uint32_t idx) {
+    glActiveTexture(GL_TEXTURE0 + idx);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glUniform1i(texture_shader_handle, idx);
+}
