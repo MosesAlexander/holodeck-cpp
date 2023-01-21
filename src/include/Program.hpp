@@ -1,7 +1,12 @@
 #ifndef PROGRAM_HEADERFILE_H
 #define PROGRAM_HEADERFILE_H
 
+#include "Application.hpp"
 #include "Shader.hpp"
+
+struct Shader;
+
+using namespace std;
 
 struct Program {
     GLuint id;

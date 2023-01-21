@@ -1,6 +1,6 @@
 #include "Uniform.hpp"
 
-UniformDescriptor::UniformDescriptor(GLuint program_id, char *uniform_name) {
+UniformDescriptor::UniformDescriptor(GLuint program_id, const char *uniform_name) {
     uniform_shader_handle = glGetUniformLocation(
         program_id,
         uniform_name

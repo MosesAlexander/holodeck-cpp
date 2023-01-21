@@ -1,24 +1,12 @@
-#ifndef BUFFER_HEADERFILE_H
-#define BUFFER_HEADERFILE_H
+#ifndef VAO_HEADERFILE_H
+#define VAO_HEADERFILE_H
 
+#include "BufferDescriptor.hpp"
+#include "EboDescriptor.hpp"
 #include "Attributes.hpp"
 #include "Application.hpp"
 
-struct BufferDescriptor {
-    GLuint buffer_id;
-
-    BufferDescriptor(vector<float> *vertices);
-    void bind();
-};
-
-struct EboDescriptor {
-    GLuint ebo_id;
-    int num_ebo_elements;
-    vector<uint32_t> ebo_indices;
-
-    EboDescriptor(vector<uint32_t> *indices);
-    void bind();
-};
+struct EboDescriptor;
 
 struct VaoDescriptor {
     GLuint vao_id;

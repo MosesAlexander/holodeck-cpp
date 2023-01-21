@@ -12,6 +12,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Model.hpp"
+#include "BufferDescriptor.hpp"
+#include "EboDescriptor.hpp"
+#include "Attributes.hpp"
+#include "Mesh.hpp"
+#include "Model.hpp"
+
+struct Model;
 
 using namespace std;
 
@@ -22,8 +30,10 @@ public:
 	void render_loop();
 	~Application() { glfwTerminate(); }
 	void render_models();
+	void add_model(Model&& model);
 private:
     GLFWwindow *window;
+	vector<Model> models;
     int init_window();
 	void process_input();
 	bool is_initialized = false;

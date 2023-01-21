@@ -1,12 +1,16 @@
 add_executable(holodeck main.cpp
                         Application.cpp
-                        Buffer.cpp
+                        BufferDescriptor.cpp
+                        EboDescriptor.cpp
+                        VaoDescriptor.cpp
                         Program.cpp
                         Shader.cpp
                         Uniform.cpp
-                        Vertex.cpp
+                        Model.cpp
+                        Mesh.cpp
                         Cube.cpp
                         Quad.cpp
+                        Texture.cpp
                         glad.c)
 
 project(holodeck)

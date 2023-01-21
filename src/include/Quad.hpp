@@ -1,5 +1,6 @@
 #ifndef QUAD_HEADERFILE_H
 #define QUAD_HEADERFILE_H
+
 #include "Application.hpp"
 #include "Cube.hpp"
 

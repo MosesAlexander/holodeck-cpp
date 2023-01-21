@@ -1,27 +1,4 @@
-#include "Vertex.hpp"
-
-void Model::add_mesh(Mesh&& mesh) {
-    meshes.push_back(std::move(mesh));
-}
-
-void Model::attach_program(Program *program) {
-    program = program;
-}
-
-void Model::render() {
-    for (auto mesh : meshes) {
-        glDrawElements(
-            GL_TRIANGLES,
-            mesh.m_ebo->num_ebo_elements,
-            GL_UNSIGNED_INT,
-            NULL
-        );
-    }
-}
-
-void Model::use_program() {
-    glUseProgram(program->id);
-}
+#include "Mesh.hpp"
 
 Mesh::Mesh(vector<float> *vertices, vector<uint32_t> *indices, AttributesDescriptor *attr) {
     BufferDescriptor *buffer = new BufferDescriptor(vertices);
@@ -48,8 +25,8 @@ void Mesh::add_uniform(UniformDescriptor&& uniform) {
     uniforms.push_back(std::move(uniform));
 }
 
-void Mesh::add_texture(TextureDescriptor *texture) {
-    textures.push_back(texture);
+void Mesh::add_texture(TextureDescriptor&& texture) {
+    textures.push_back(std::move(texture));
 }
 
 void Mesh::render() {

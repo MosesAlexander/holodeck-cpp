@@ -39,7 +39,7 @@ struct UniformPackedParam {
 struct UniformDescriptor {
     GLint uniform_shader_handle;
 
-    UniformDescriptor(GLuint program_id, char *uniform_name);
+    UniformDescriptor(GLuint program_id, const char *uniform_name);
     void update(UniformPackedParam *packed_param);
 };
 

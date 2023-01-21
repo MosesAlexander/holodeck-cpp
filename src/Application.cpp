@@ -65,3 +65,7 @@ void Application::process_input() {
 		glfwSetWindowShouldClose(window, true);
 	}
 }
+
+void Application::add_model(Model&& model) {
+	models.push_back(std::move(model));
+}

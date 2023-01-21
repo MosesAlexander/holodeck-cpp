@@ -2,6 +2,7 @@
 #define ATTR_HEADERFILE_H
 
 #include "Application.hpp"
+using namespace std;
 
 struct AttributesDescriptor {
     GLuint component_groups;

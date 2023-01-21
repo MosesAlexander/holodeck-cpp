@@ -2,7 +2,8 @@
 #include "Program.hpp"
 #include "Attributes.hpp"
 #include "Cube.hpp"
-#include "Vertex.hpp"
+#include "Model.hpp"
+#include "Texture.hpp"
 
 int main() {
 	try {
@@ -45,23 +46,21 @@ int main() {
 		UniformDescriptor projection_uniform(program_cube.id, "projection");
 		UniformDescriptor camera_uniform(program_cube.id, "look_at");
 
-		cube_mesh.add_uniform(rotate_about_x_uniform);
-		cube_mesh.add_uniform(rotate_about_y_uniform);
-		cube_mesh.add_uniform(rotate_about_z_uniform);
-		cube_mesh.add_uniform(translate_uniform);
-		cube_mesh.add_uniform(mixvalue_uniform);
-		cube_mesh.add_uniform(projection_uniform);
-		cube_mesh.add_uniform(camera_uniform);
+		cube_mesh.add_uniform(std::move(rotate_about_x_uniform));
+		cube_mesh.add_uniform(std::move(rotate_about_y_uniform));
+		cube_mesh.add_uniform(std::move(rotate_about_z_uniform));
+		cube_mesh.add_uniform(std::move(translate_uniform));
+		cube_mesh.add_uniform(std::move(mixvalue_uniform));
+		cube_mesh.add_uniform(std::move(projection_uniform));
+		cube_mesh.add_uniform(std::move(camera_uniform));
 
-		cube_mesh.add_texture(texture1_desc);
-		cube_mesh.add_texture(texture2_desc);
+		cube_mesh.add_texture(std::move(text1_desc));
+		cube_mesh.add_texture(std::move(text2_desc));
 
-		Model cube_model();
-		cube_model.add_mesh(cube_mesh);
-		cube_model.attach_program(program_cube);
-		app.add_model(cube_model);
-
-
+		Model cube_model;
+		cube_model.add_mesh(std::move(cube_mesh));
+		cube_model.attach_program(&program_cube);
+		app.add_model(std::move(cube_model));
 
 		app.render_models();
 

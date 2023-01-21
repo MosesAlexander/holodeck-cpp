@@ -4,8 +4,8 @@
 #include "stb_image.h"
 
 TextureDescriptor::TextureDescriptor(GLuint bound_program_id,
-                    char *shader_handle_name,
-                    char *path,
+                    const char *shader_handle_name,
+                    const char *path,
                     GLenum format) {
     
     int width = 0;
@@ -50,7 +50,7 @@ TextureDescriptor::TextureDescriptor(GLuint bound_program_id,
         format,
         GL_UNSIGNED_BYTE,
         (const void*) buffer
-    )
+    );
 
     glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(buffer);
