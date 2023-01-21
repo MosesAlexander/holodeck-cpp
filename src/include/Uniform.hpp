@@ -10,29 +10,13 @@ enum class uniform_type {
     Uniform4FVMatrix,
 };
 
-struct Uniform3FParam {
-    float param[3];
-};
-
-struct Uniform1IParam {
-    int32_t param;
-};
-
-struct Uniform1FParam {
-    float param;
-};
-
-struct Uniform4FVMatrix {
-    //Mat4 param;
-};
-
 struct UniformPackedParam {
     uniform_type type;
     union {
         float param3f[3];
         int param1i;
         float param1f;
-        float parammat4[16];
+        glm::mat4 parammat;
     };
 };
 
@@ -40,7 +24,7 @@ struct UniformDescriptor {
     GLint uniform_shader_handle;
 
     UniformDescriptor(GLuint program_id, const char *uniform_name);
-    void update(UniformPackedParam *packed_param);
+    void update(const UniformPackedParam& packed_param);
 };
 
 #endif
