@@ -9,7 +9,7 @@ void Model::attach_program(Program *program) {
 }
 
 void Model::render() {
-    for (auto mesh : meshes) {
+    for (auto &mesh : meshes) {
         glDrawElements(
             GL_TRIANGLES,
             mesh.m_ebo->num_ebo_elements,

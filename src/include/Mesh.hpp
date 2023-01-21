@@ -31,8 +31,8 @@ struct Mesh {
     ~Mesh();
     Mesh(Mesh&& source);
     Mesh& operator=(Mesh&& source);
-    Mesh(const Mesh&);
-    const Mesh& operator=(const Mesh&);
+    Mesh(const Mesh&) = delete;
+    const Mesh& operator=(const Mesh&) = delete;
     void bind_vao();
     void add_uniform(UniformDescriptor&& uniform);
     void add_texture(TextureDescriptor&& texture);

@@ -60,9 +60,15 @@ Mesh& Mesh::operator=(Mesh&& source) {
     return *this;
 }
 
+/*
 Mesh::Mesh(const Mesh& source) {
+    /*
+    this->m_buffer = source.m_buffer;
+    this->m_vao = source.m_vao;
+    this->m_ebo = source.m_ebo;
 }
 
 const Mesh& Mesh::operator=(const Mesh& source) {
     return source;
 }
+*/
