@@ -34,8 +34,8 @@ int main() {
 		};
 		Mesh cube_mesh(&cube.vertices, &cube.indices, &cube_attr);
 
-		TextureDescriptor text1_desc(program_cube.id, "texture1", "../res/textures/stallman.jpg", GL_RGB);
-		TextureDescriptor text2_desc(program_cube.id, "texture2", "../res/textures/gnu.png", GL_RGBA);
+		TextureDescriptor text1_desc(program_cube.id, "texture1", "res/textures/stallman.jpg", GL_RGB);
+		TextureDescriptor text2_desc(program_cube.id, "texture2", "res/textures/gnu.png", GL_RGBA);
 
 		UniformDescriptor rotate_about_x_uniform(program_cube.id, "rotate_about_x");
 		UniformDescriptor rotate_about_y_uniform(program_cube.id, "rotate_about_y");
