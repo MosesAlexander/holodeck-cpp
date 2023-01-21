@@ -40,10 +40,12 @@ int Program::link_shaders() {
         std::cerr<<"Error linking program:"<<endl<<error<<endl;
         free(error);
 
-        throw application_exception("Failed to compile shader!");
+        return -1;
     }
 
     for (auto shader : shader_ids) {
         glDetachShader(id, shader);
     }
+
+    return 0;
 }

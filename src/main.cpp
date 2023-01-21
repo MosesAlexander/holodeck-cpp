@@ -19,7 +19,7 @@ int main() {
 		program_cube.add_shader(&frag_shader_cube);
 		ret = program_cube.link_shaders();
 		if (ret < 0) {
-			cerr<<"There was a problem compiling the shaders!"<<endl;
+			cerr<<"There was a problem linking the shaders!"<<endl;
 			return -1;
 		}
 
