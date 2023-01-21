@@ -37,3 +37,32 @@ void Mesh::render() {
         NULL
     );
 }
+
+Mesh::Mesh(Mesh&& source) {
+    this->m_buffer = source.m_buffer;
+    this->m_vao = source.m_vao;
+    this->m_ebo = source.m_ebo;
+
+    source.m_buffer = nullptr;
+    source.m_vao = nullptr;
+    source.m_ebo = nullptr;
+}
+
+Mesh& Mesh::operator=(Mesh&& source) {
+    this->m_buffer = source.m_buffer;
+    this->m_vao = source.m_vao;
+    this->m_ebo = source.m_ebo;
+
+    source.m_buffer = nullptr;
+    source.m_vao = nullptr;
+    source.m_ebo = nullptr;
+
+    return *this;
+}
+
+Mesh::Mesh(const Mesh& source) {
+}
+
+const Mesh& Mesh::operator=(const Mesh& source) {
+    return source;
+}

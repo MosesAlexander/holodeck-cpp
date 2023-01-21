@@ -29,6 +29,10 @@ struct Mesh {
     Mesh(vector<float> *vertices, vector<uint32_t> *indices,
                         AttributesDescriptor *attr);
     ~Mesh();
+    Mesh(Mesh&& source);
+    Mesh& operator=(Mesh&& source);
+    Mesh(const Mesh&);
+    const Mesh& operator=(const Mesh&);
     void bind_vao();
     void add_uniform(UniformDescriptor&& uniform);
     void add_texture(TextureDescriptor&& texture);
