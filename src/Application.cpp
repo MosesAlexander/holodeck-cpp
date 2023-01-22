@@ -106,7 +106,7 @@ void Application::render_models() {
 		std::move(
 			UniformPackedParam{
 				type: uniform_type::Uniform4FVMatrix,
-				parammat: perspective_projection_matrix
+				parammat: std::move(perspective_projection_matrix)
 			}
 		)
 	);
@@ -142,6 +142,101 @@ void Application::render_models() {
 			zoom_out,
 			reset_zoom
 		);
+
+		if (moving_in == true) {
+			cur_off_z += 0.02f;
+		}
+		if (moving_out == true) {
+			cur_off_z -= 0.02f;
+		}
+		if (moving_down == true) {
+			cur_off_y -= 0.02f;
+		}
+		if (moving_up == true) {
+			cur_off_y += 0.02f;
+		}
+		if (moving_left == true) {
+			cur_off_x -= 0.02f;
+		}
+		if (moving_right == true) {
+			cur_off_x += 0.02f;
+		}
+
+		if (x_rot_ccwise == true) {
+			x_angle_multiplier += 0.01f;
+		}
+		if (x_rot_cwise == true) {
+			x_angle_multiplier -= 0.01f;
+		}
+
+		if (y_rot_ccwise == true) {
+			y_angle_multiplier += 0.01f;
+		}
+		if (y_rot_cwise == true) {
+			y_angle_multiplier -= 0.01f;
+		}
+
+		if (z_rot_ccwise == true) {
+			z_angle_multiplier += 0.01f;
+		}
+		if (z_rot_cwise == true) {
+			z_angle_multiplier -= 0.01f;
+		}
+
+		if (reset_all_angles == true) {
+			x_angle_multiplier = 0.0f;
+			y_angle_multiplier = 0.0f;
+			z_angle_multiplier = 0.0f;
+		}
+
+		if (zoom_in == true) {
+			if (fov_val > 0.0f) {
+				fov_val -= 0.2f;
+			}
+		} 
+
+		if (zoom_out == true) {
+			if (fov_val < 360.0f) {
+				fov_val += 0.2f;
+			}
+		}
+
+		if (reset_zoom == true) {
+			fov_val = 45.0f;
+		}
+
+		if (zoom_out == true || zoom_in == true || reset_zoom == true) {
+			models[0].use_program();
+
+			glm::mat4 perspective_projection_matrix = glm::perspective(
+					glm::radians(fov_val), 1024.0f / 768.0f, 0.0f, 100.0f);
+
+			models[0].meshes[0].uniforms[5].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(perspective_projection_matrix)
+					}
+				)
+			);
+		}
+
+		auto model = glm::mat4(1.0f);
+		auto rotate_about_x_axis = glm::rotate(model, M_PIf * x_angle_multiplier, glm::vec3(1.0f, 0.0f, 0.0f));
+		auto rotate_about_y_axis = glm::rotate(model, M_PIf * y_angle_multiplier, glm::vec3(0.0f, 1.0f, 0.0f));
+		auto rotate_about_z_axis = glm::rotate(model, M_PIf * z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
+		auto translation_matrix = glm::translate(model, glm::vec3(cur_off_x, cur_off_y, cur_off_z));
+
+		models[0].meshes[0].textures[0].set_active_texture(0);
+		models[0].meshes[0].textures[1].set_active_texture(1);
+
+		if (mixvalue_grow == true) {
+			mixvalue += 0.02f;
+		}
+
+		if (mixvalue_shrink == true) {
+			mixvalue -= 0.02f;
+		}
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
