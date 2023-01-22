@@ -5,7 +5,7 @@ void Model::add_mesh(Mesh&& mesh) {
 }
 
 void Model::attach_program(Program *program) {
-    program = program;
+    this->program = program;
 }
 
 void Model::render() {
@@ -21,4 +21,14 @@ void Model::render() {
 
 void Model::use_program() {
     glUseProgram(program->id);
+}
+
+Model::Model(Model&& source) {
+    meshes = std::move(source.meshes);
+    program = source.program;
+    source.program = nullptr;
+}
+
+Model::Model() {
+    program = nullptr;
 }

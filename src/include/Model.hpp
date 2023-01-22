@@ -14,6 +14,9 @@ struct Model {
     vector<Mesh> meshes;
     Program *program;
 
+    Model(Model&&);
+    Model();
+    Model& operator=(Model&&) = delete;
     void add_mesh(Mesh&& mesh);
     void attach_program(Program *program);
     void render();

@@ -18,8 +18,6 @@ struct UniformDescriptor;
 struct TextureDescriptor;
 
 struct Mesh {
-    vector<float> vertices;
-    vector<uint32_t> *indices;
     vector<TextureDescriptor> textures;
     vector<UniformDescriptor> uniforms;
     BufferDescriptor *m_buffer;

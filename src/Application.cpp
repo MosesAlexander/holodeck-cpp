@@ -34,6 +34,7 @@ int Application::init_window() {
 	}
 
 	glViewport(0, 0, 1024, 768);
+	glClearColor(0.2f,0.3f,0.3f,1.0f);
 
 	// set callback so the glViewport re-adjust to window resizing
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -100,7 +101,7 @@ void Application::render_models() {
 	models[0].use_program();
 
 	glm::mat4 perspective_projection_matrix = glm::perspective(
-			glm::radians(fov_val), 1024.0f / 768.0f, 0.0f, 100.0f);
+			glm::radians(fov_val), 1024.0f / 768.0f, 0.1f, 100.0f);
 
 	models[0].meshes[0].uniforms[5].update(
 		std::move(
@@ -209,7 +210,7 @@ void Application::render_models() {
 			models[0].use_program();
 
 			glm::mat4 perspective_projection_matrix = glm::perspective(
-					glm::radians(fov_val), 1024.0f / 768.0f, 0.0f, 100.0f);
+					glm::radians(fov_val), 1024.0f / 768.0f, 0.1f, 100.0f);
 
 			models[0].meshes[0].uniforms[5].update(
 				std::move(
@@ -236,6 +237,140 @@ void Application::render_models() {
 
 		if (mixvalue_shrink == true) {
 			mixvalue -= 0.02f;
+		}
+
+		glfwGetCursorPos(window, &current_cursor_x, &current_cursor_y);
+
+		float cursor_x_diff = last_cursor_x - current_cursor_x;
+		last_cursor_x = current_cursor_x;
+		float cursor_y_diff = last_cursor_y - current_cursor_y;
+		last_cursor_y = current_cursor_y;
+
+		yaw -= 0.03f * cursor_x_diff;
+		pitch += 0.03f * cursor_y_diff;
+
+		if (pitch < -89.95f) {
+			pitch = -89.95f;
+		}
+		if (pitch > 89.95f) {
+			pitch = 89.95f;
+		}
+
+		// Gram-Schmidt process
+		// Positive Z axis leads outside the screen
+		auto direction = glm::vec3(0.0f, 0.0f, 0.0f);
+		direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+		direction.y = sin(glm::radians(pitch));
+		direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+
+		auto camera_front = glm::normalize(direction);
+
+		if (camera_moving_forwards == true) {
+			camera_position += camera_front * 0.02f;
+		}
+
+		if (camera_moving_backwards == true) {
+			camera_position -= camera_front * 0.02f;
+		}
+
+		camera_position.y= 0.2f;
+
+		auto camera_target = camera_position + camera_front;
+		auto camera_direction = glm::normalize(camera_position - camera_target);
+		auto c_up = glm::vec3(0.0f, 1.0f, 0.0f);
+		auto camera_right = glm::normalize(glm::cross(c_up, camera_direction));
+		auto camera_up = glm::cross(camera_direction, camera_right);
+
+		if (camera_moving_left == true) {
+			camera_position -= camera_right * 0.009f;
+		}
+
+		if (camera_moving_right == true) {
+			camera_position += camera_right * 0.009f;
+		}
+
+		if (camera_moving_down == true) {
+			camera_position.y -= 0.02f;
+			if (camera_position.y < 0.2f) {
+				camera_position.y = 0.2f;
+			}
+		}
+
+		if (camera_moving_up == true) {
+			camera_position.y += 0.02f;
+		}
+
+		//auto LookAt = glm::lookAt(camera_position, camera_direction, camera_up);
+		auto mat_A = glm::mat4(
+			glm::vec4(camera_right, 0.0f),
+			glm::vec4(camera_up, 0.0f),
+			glm::vec4(camera_direction, 0.0f),
+			glm::vec4(0.0f,0.0f,0.0f,1.0f)
+		);
+
+		mat_A = glm::transpose(mat_A);
+		auto mat_B = glm::mat4(
+			glm::vec4(1.0f, 0.0f, 0.0f, 0.0f),
+			glm::vec4(0.0f, 1.0f, 0.0f, 0.0f),
+			glm::vec4(0.0f, 0.0f, 1.0f, 0.0f),
+			glm::vec4(-camera_position, 1.0f)
+		);
+
+		auto LookAt = mat_A * mat_B;
+
+		models[0].use_program();
+		for (auto& mesh : models[0].meshes) {
+			mesh.uniforms[0].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(rotate_about_x_axis)
+					}
+				)
+			);
+			mesh.uniforms[1].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(rotate_about_y_axis)
+					}
+				)
+			);
+			mesh.uniforms[2].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(rotate_about_z_axis)
+					}
+				)
+			);
+			mesh.uniforms[3].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(translation_matrix)
+					}
+				)
+			);
+			mesh.uniforms[4].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform1FParam,
+						param1f: mixvalue
+					}
+				)
+			);
+			mesh.uniforms[6].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(LookAt)
+					}
+				)
+			);
+
+			mesh.bind_vao();
+			mesh.render();
 		}
 		
 		glfwSwapBuffers(window);

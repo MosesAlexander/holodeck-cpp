@@ -42,6 +42,8 @@ Mesh::Mesh(Mesh&& source) {
     this->m_buffer = source.m_buffer;
     this->m_vao = source.m_vao;
     this->m_ebo = source.m_ebo;
+    this->uniforms = std::move(source.uniforms);
+    this->textures = std::move(source.textures);
 
     source.m_buffer = nullptr;
     source.m_vao = nullptr;

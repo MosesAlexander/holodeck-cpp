@@ -33,3 +33,8 @@ void UniformDescriptor::update(const UniformPackedParam& packedparam) {
         break;
     }
 }
+
+UniformDescriptor::UniformDescriptor(UniformDescriptor&& source) {
+    uniform_shader_handle = source.uniform_shader_handle;
+    source.uniform_shader_handle = 0;
+}
