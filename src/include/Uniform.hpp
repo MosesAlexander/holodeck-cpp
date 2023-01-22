@@ -25,7 +25,7 @@ struct UniformDescriptor {
 
     UniformDescriptor(GLuint program_id, const char *uniform_name);
     UniformDescriptor(UniformDescriptor&&);
-    UniformDescriptor& operator=(const UniformDescriptor&) = delete;
+    UniformDescriptor& operator=(const UniformDescriptor&);
     void update(const UniformPackedParam& packed_param);
 };
 

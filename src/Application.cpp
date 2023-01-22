@@ -228,8 +228,6 @@ void Application::render_models() {
 		auto rotate_about_z_axis = glm::rotate(model, M_PIf * z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
 		auto translation_matrix = glm::translate(model, glm::vec3(cur_off_x, cur_off_y, cur_off_z));
 
-		models[0].meshes[0].textures[0].set_active_texture(0);
-		models[0].meshes[0].textures[1].set_active_texture(1);
 
 		if (mixvalue_grow == true) {
 			mixvalue += 0.02f;
@@ -319,6 +317,10 @@ void Application::render_models() {
 		auto LookAt = mat_A * mat_B;
 
 		models[0].use_program();
+
+		models[0].meshes[0].textures[0].set_active_texture(0);
+		models[0].meshes[0].textures[1].set_active_texture(1);
+
 		for (auto& mesh : models[0].meshes) {
 			mesh.uniforms[0].update(
 				std::move(
@@ -371,6 +373,32 @@ void Application::render_models() {
 
 			mesh.bind_vao();
 			mesh.render();
+		}
+
+		for (auto model_idx = 1; model_idx < models.size(); model_idx++) {
+			models[model_idx].use_program();
+			for (auto& mesh : models[model_idx].meshes) {
+				mesh.bind_vao();
+				mesh.textures[0].set_active_texture(0);
+				mesh.uniforms[0].update(
+					std::move(
+						UniformPackedParam{
+							type: uniform_type::Uniform4FVMatrix,
+							parammat: std::move(perspective_projection_matrix)
+						}
+					)
+				);
+
+				mesh.uniforms[1].update(
+					std::move(
+						UniformPackedParam{
+							type: uniform_type::Uniform4FVMatrix,
+							parammat: std::move(LookAt)
+						}
+					)
+				);
+			}
+			models[model_idx].render();
 		}
 		
 		glfwSwapBuffers(window);

@@ -15,6 +15,7 @@ void UniformDescriptor::update(const UniformPackedParam& packedparam) {
         break;
         case uniform_type::Uniform1IParam:
             glUniform1i(uniform_shader_handle, packedparam.param1i);
+            std::cout<<"WHAT THE FUCK??"<<std::endl;
         break;
         case uniform_type::Uniform3FParam:
             glUniform3f(uniform_shader_handle,
@@ -37,4 +38,10 @@ void UniformDescriptor::update(const UniformPackedParam& packedparam) {
 UniformDescriptor::UniformDescriptor(UniformDescriptor&& source) {
     uniform_shader_handle = source.uniform_shader_handle;
     source.uniform_shader_handle = 0;
+}
+
+UniformDescriptor& UniformDescriptor::operator=(const UniformDescriptor& source) {
+    uniform_shader_handle = source.uniform_shader_handle;
+
+    return *this;
 }
