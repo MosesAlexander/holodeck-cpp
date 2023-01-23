@@ -16,7 +16,7 @@ add_executable(holodeck main.cpp
 
 project(holodeck)
 
-set(CMAKE_CXX_STANDARD 17)
+set_property(TARGET holodeck PROPERTY CXX_STANDARD 20)
 
 message("holodeck current source dir = ${CMAKE_CURRENT_SOURCE_DIR}")
 

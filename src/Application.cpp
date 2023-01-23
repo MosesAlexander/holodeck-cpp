@@ -223,9 +223,9 @@ void Application::render_models() {
 		}
 
 		auto model = glm::mat4(1.0f);
-		auto rotate_about_x_axis = glm::rotate(model, M_PIf * x_angle_multiplier, glm::vec3(1.0f, 0.0f, 0.0f));
-		auto rotate_about_y_axis = glm::rotate(model, M_PIf * y_angle_multiplier, glm::vec3(0.0f, 1.0f, 0.0f));
-		auto rotate_about_z_axis = glm::rotate(model, M_PIf * z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
+		auto rotate_about_x_axis = glm::rotate(model, numbers::pi_v<float> * x_angle_multiplier, glm::vec3(1.0f, 0.0f, 0.0f));
+		auto rotate_about_y_axis = glm::rotate(model, numbers::pi_v<float> * y_angle_multiplier, glm::vec3(0.0f, 1.0f, 0.0f));
+		auto rotate_about_z_axis = glm::rotate(model, numbers::pi_v<float> * z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
 		auto translation_matrix = glm::translate(model, glm::vec3(cur_off_x, cur_off_y, cur_off_z));
 
 
