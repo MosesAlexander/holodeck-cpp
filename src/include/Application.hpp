@@ -9,7 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstdint>
-#include <numbers>
+//#include <numbers> // Not stable in gcc-11
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -19,6 +19,8 @@
 #include "Attributes.hpp"
 #include "Mesh.hpp"
 #include "Model.hpp"
+
+#define M_PIf 3.14159265358979323846f
 
 struct Model;
 
