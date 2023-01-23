@@ -104,6 +104,52 @@ int main() {
 		floor_model.attach_program(&program_floor);
 		app.add_model(std::move(floor_model));
 
+		vector<vector<float>> wall_offsets = {
+			{0.0f, 0.0f, 2.5f},
+			{0.0f, 0.0f, -2.5f},
+			{1.25f, 0.0f, 0.0f},
+			{-1.25f, 0.0f, 0.0f}
+		};
+		vector<pair<float,float>> width_heights = {
+			std::make_pair(2.5f, 0.6f),
+			std::make_pair(2.5f, 0.6f),
+			std::make_pair(5.0f, 0.6f),
+			std::make_pair(5.0f, 0.6f)
+		};
+
+		for (auto wall_idx = 0; wall_idx < wall_offsets.size(); wall_idx++) {
+			Quad wall{
+				width_heights[wall_idx].first,
+				width_heights[wall_idx].second,
+				wall_offsets[wall_idx].data(),
+				wall_offsets[wall_idx].data(),
+				ScaleFactor{2.0f,1.0f}
+			};
+
+			AttributesDescriptor wall_attr {
+				2,
+				{3, 2},
+				{GL_FLOAT, GL_FLOAT, GL_FLOAT},
+				{0, 3},
+				{5, 5},
+			};
+			Mesh wall_mesh(&wall.vertices, &wall.indices, &wall_attr);
+
+			TextureDescriptor text_wall(program_floor.id, "texture1", "res/textures/brick_wall.jpg", GL_RGB);
+
+			projection_uniform = UniformDescriptor(program_floor.id, "projection");
+			camera_uniform = UniformDescriptor(program_floor.id, "look_at");
+
+			wall_mesh.add_uniform(std::move(projection_uniform));
+			wall_mesh.add_uniform(std::move(camera_uniform));
+
+			wall_mesh.add_texture(std::move(text_wall));
+			Model wall_model;
+			wall_model.add_mesh(std::move(wall_mesh));
+			wall_model.attach_program(&program_floor);
+			app.add_model(std::move(wall_model));
+		}
+
 		app.render_models();
 
 	} catch (std::exception &e) {
