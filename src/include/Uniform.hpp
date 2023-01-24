@@ -25,6 +25,7 @@ struct UniformDescriptor {
 
     UniformDescriptor(GLuint program_id, const char *uniform_name);
     UniformDescriptor(UniformDescriptor&&);
+    UniformDescriptor() : uniform_shader_handle(0) {};
     UniformDescriptor& operator=(const UniformDescriptor&);
     void update(const UniformPackedParam& packed_param);
 };

@@ -20,8 +20,8 @@ struct TextManager {
     UniformDescriptor text_projection_uniform;
     glm::mat4 text_projection;
     std::map<char, Character> characters;
-    gl::types::GLuint text_vao;
-    gl::types::GLuint text_vbo;
+    GLuint text_vao;
+    GLuint text_vbo;
 
     TextManager(Program *program);
     TextManager(TextManager&&);
