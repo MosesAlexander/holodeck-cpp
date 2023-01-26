@@ -11,7 +11,7 @@ struct Character {
     uint32_t texture_id;
     glm::vec2 size;
     glm::vec2 bearing;
-    uint32_t advance;
+    int64_t advance;
 };
 
 struct TextManager {
@@ -22,12 +22,14 @@ struct TextManager {
     std::map<char, Character> characters;
     GLuint text_vao;
     GLuint text_vbo;
+    FT_Library ft;
+    FT_Face face;
 
     TextManager(Program *program);
     TextManager(TextManager&&);
     TextManager& operator=(TextManager&&);
 
-    void init();
+    int init();
     void use_text_program();
     void render_text(std::string text, float x, float y, float scale, glm::vec3 color);
 };

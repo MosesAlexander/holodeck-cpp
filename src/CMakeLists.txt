@@ -37,4 +37,4 @@ message(STATUS "Found ASSIMP in ${ASSIMP_INCLUDE_DIR}")
 find_package(Freetype REQUIRED)
 message(STATUS "Found Freetype in ${Freetype_INCLUDE_DIR}")
 
-target_link_libraries(holodeck PUBLIC glfw ${CMAKE_DL_LIBS})
+target_link_libraries(holodeck PUBLIC glfw ${FREETYPE_LIBRARIES} ${CMAKE_DL_LIBS})
