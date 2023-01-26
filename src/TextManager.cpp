@@ -88,7 +88,69 @@ int TextManager::init() {
         characters.insert(std::pair<char, Character>(c, character));
     }
 
-    FT_Done_Face(face);
-    FT_Done_FreeType(ft);
+    if (FT_Done_Face(face)) {
+        std::cerr<<"ERROR::FREETYPE: Error freeing face"<<std::endl;
+        return -1;
+    }
+    if (FT_Done_FreeType(ft)) {
+        std::cerr<<"ERROR::FREETYPE: Error freeing FreeType resources"<<std::endl;
+        return -1;
+    }
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     return 0;
+}
+
+void TextManager::use_text_program() {
+    glUseProgram(program->id);
+}
+
+void TextManager::render_text(std::string text, float x, float y, float scale, glm::vec3 color) {
+    use_text_program();
+
+    text_uniform.update(
+        std::move(
+            UniformPackedParam{
+                type: uniform_type::Uniform3FParam,
+                param3f: {color.x, color.y, color.z},
+            }
+        )
+    );
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(text_vao);
+
+    std::string::const_iterator c;
+    for (c = text.begin(); c != text.end(); c++)
+    {
+        Character ch = characters[*c];
+
+        float xpos = x + ch.bearing.x * scale;
+        float ypos = y - (ch.size.y - ch.bearing.y) * scale;
+
+        float w = ch.size.x * scale;
+        float h = ch.size.y * scale;
+
+        float vertices[6][4] = {
+            {xpos,     ypos + h,   0.0f, 0.0f},
+            {xpos,     ypos,       0.0f, 1.0f},
+            {xpos + w, ypos,       1.0f, 1.0f},
+
+            {xpos,     ypos + h,   0.0f, 0.0f},
+            {xpos + w, ypos,       1.0f, 1.0f},
+            {xpos + w, ypos + h,   1.0f, 0.0f}
+        };
+
+        glBindTexture(GL_TEXTURE_2D, ch.texture_id);
+        glBindBuffer(GL_ARRAY_BUFFER, text_vbo);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        x += (ch.advance >> 6) * scale;
+    }
+
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
