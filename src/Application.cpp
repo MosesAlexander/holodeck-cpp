@@ -613,3 +613,7 @@ void Application::process_input(
 void Application::add_model(Model&& model) {
 	models.push_back(std::move(model));
 }
+
+void Application::attach_text_manager(TextManager&& text_manager) {
+	this->text_manager = std::move(text_manager);
+}

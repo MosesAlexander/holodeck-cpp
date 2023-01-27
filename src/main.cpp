@@ -150,6 +150,23 @@ int main() {
 			app.add_model(std::move(wall_model));
 		}
 
+		Shader vert_shader_text("src/shaders/text.vert", GL_VERTEX_SHADER);
+		Shader frag_shader_text("src/shaders/text.frag", GL_FRAGMENT_SHADER);
+
+		Program program_text;
+		program_text.add_shader(&vert_shader_text);
+		program_text.add_shader(&frag_shader_text);
+
+		ret = program_floor.link_shaders();
+		if (ret < 0) {
+			cerr<<"There was a problem linking the floor shaders"<<endl;
+			return -1;
+		}
+
+		TextManager text_manager(&program_text);
+
+		
+
 		app.render_models();
 
 	} catch (std::exception &e) {

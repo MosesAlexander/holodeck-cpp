@@ -1,7 +1,10 @@
 #ifndef PROGRAM_HEADERFILE_H
 #define PROGRAM_HEADERFILE_H
 
-#include "Application.hpp"
+//#include "Application.hpp"
+#include <glad/glad.h>
+#include <vector>
+#include <iostream>
 #include "Shader.hpp"
 
 struct Shader;

@@ -1,13 +1,13 @@
 #ifndef MESH_HEADERFILE_H
 #define MESH_HEADERFILE_H
 
+#include "Uniform.hpp"
 #include "BufferDescriptor.hpp"
-#include "Application.hpp"
+//#include "Application.hpp"
 #include "VaoDescriptor.hpp"
 #include "Texture.hpp"
 #include "Program.hpp"
 #include "Attributes.hpp"
-#include "Uniform.hpp"
 
 using namespace std;
 

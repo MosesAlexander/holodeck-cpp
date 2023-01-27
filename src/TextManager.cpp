@@ -154,3 +154,37 @@ void TextManager::render_text(std::string text, float x, float y, float scale, g
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+TextManager::TextManager(TextManager&& source) {
+    this->program = source.program;
+    this->text_uniform = std::move(source.text_uniform);
+    this->text_projection_uniform = std::move(source.text_projection_uniform);
+    this->text_projection = std::move(source.text_projection);
+    this->characters = std::move(source.characters);
+    this->text_vao = source.text_vao;
+    this->text_vbo = source.text_vbo;
+
+    source.program = nullptr;
+    source.text_vao = 0;
+    source.text_vbo = 0;
+}
+
+TextManager& TextManager::operator=(TextManager&& source) {
+    this->program = source.program;
+    this->text_uniform = std::move(source.text_uniform);
+    this->text_projection_uniform = std::move(source.text_projection_uniform);
+    this->text_projection = std::move(source.text_projection);
+    this->characters = std::move(source.characters);
+    this->text_vao = source.text_vao;
+    this->text_vbo = source.text_vbo;
+
+    source.program = nullptr;
+    source.text_vao = 0;
+    source.text_vbo = 0;
+
+    return *this;
+}
+
+TextManager::TextManager() {
+    this->program = nullptr;
+}

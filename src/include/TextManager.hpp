@@ -2,10 +2,18 @@
 #define TEXTMANAGER_HEADERFILE_H
 
 #include <ft2build.h>
+
+#include FT_FREETYPE_H
+
+#include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <map>
 #include "Program.hpp"
 #include "Uniform.hpp"
 
-#include FT_FREETYPE_H
+using namespace std;
 
 struct Character {
     uint32_t texture_id;
@@ -27,6 +35,7 @@ struct TextManager {
 
     TextManager(Program *program);
     TextManager(TextManager&&);
+    TextManager();
     TextManager& operator=(TextManager&&);
 
     int init();

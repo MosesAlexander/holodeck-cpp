@@ -20,8 +20,11 @@
 #include "Attributes.hpp"
 #include "Mesh.hpp"
 #include "Model.hpp"
+#include "TextManager.hpp"
+#include "Exception.hpp"
 
 struct Model;
+struct TextManager;
 
 using namespace std;
 
@@ -33,9 +36,11 @@ public:
 	~Application() { glfwTerminate(); }
 	void render_models();
 	void add_model(Model&& model);
+	void attach_text_manager(TextManager&&);
 private:
     GLFWwindow *window;
 	vector<Model> models;
+	TextManager text_manager;
     int init_window();
 	void process_input(
 		bool& moving_up,
@@ -64,11 +69,6 @@ private:
 		bool& reset_zoom
 	);
 	bool is_initialized = false;
-};
-
-class application_exception: public std::runtime_error {
-public:
-	application_exception(std::string const &msg): std::runtime_error(msg) {}
 };
 
 #endif

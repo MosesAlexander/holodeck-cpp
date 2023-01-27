@@ -37,7 +37,7 @@ int Program::link_shaders() {
                         error
         );
 
-        std::cerr<<"Error linking program:"<<endl<<error<<endl;
+        std::cerr<<"Error linking program:"<<std::endl<<error<<std::endl;
         free(error);
 
         return -1;
