@@ -157,15 +157,15 @@ int main() {
 		program_text.add_shader(&vert_shader_text);
 		program_text.add_shader(&frag_shader_text);
 
-		ret = program_floor.link_shaders();
+		ret = program_text.link_shaders();
 		if (ret < 0) {
-			cerr<<"There was a problem linking the floor shaders"<<endl;
+			cerr<<"There was a problem linking the text shaders"<<endl;
 			return -1;
 		}
 
 		TextManager text_manager(&program_text);
 
-		
+		app.attach_text_manager(std::move(text_manager));
 
 		app.render_models();
 

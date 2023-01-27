@@ -5,8 +5,19 @@ TextManager::TextManager(Program *program) {
     UniformDescriptor text_projection_uniform(program->id, "projection"); 
     this->text_uniform = text_uniform;
     this->text_projection_uniform = text_projection_uniform;
+    this->program = program;
 
-    this->text_projection = glm::ortho(0.0f, 1024.0f, 0.0f, 768.0f, 0.1f, 100.0f);
+    this->text_projection = glm::ortho(0.0f, 1024.0f, 0.0f, 768.0f);
+
+    use_text_program();
+    text_projection_uniform.update(
+        std::move(
+            UniformPackedParam{
+                type: uniform_type::Uniform4FVMatrix,
+                parammat: std::move(this->text_projection),
+            }
+        )
+    );
 
     glGenVertexArrays(1, &text_vao);
     glGenBuffers(1, &text_vbo);

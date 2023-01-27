@@ -400,6 +400,8 @@ void Application::render_models() {
 			}
 			models[model_idx].render();
 		}
+
+		text_manager.render_text(string("Greetings mortals"), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
