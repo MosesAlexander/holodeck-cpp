@@ -111,10 +111,10 @@ int main() {
 			{-1.25f, 0.0f, 0.0f}
 		};
 		vector<pair<float,float>> width_heights = {
-			std::make_pair(2.5f, 0.6f),
-			std::make_pair(2.5f, 0.6f),
-			std::make_pair(5.0f, 0.6f),
-			std::make_pair(5.0f, 0.6f)
+			std::make_pair(2.5f, 0.7f),
+			std::make_pair(2.5f, 0.7f),
+			std::make_pair(5.0f, 0.7f),
+			std::make_pair(5.0f, 0.7f)
 		};
 
 		for (auto wall_idx = 0; wall_idx < wall_offsets.size(); wall_idx++) {
@@ -149,6 +149,33 @@ int main() {
 			wall_model.attach_program(&program_floor);
 			app.add_model(std::move(wall_model));
 		}
+
+		float ceiling_center_offset[3] = {0.0f, 0.7f, 0.0f};
+		float ceiling_center[3] = {0.0f, 0.0f, 0.0f};
+		ScaleFactor ceiling_scale_factor{10.0, 10.0};
+		Quad ceiling{10.0f, 0.0f, ceiling_center_offset, ceiling_center, ceiling_scale_factor};
+		AttributesDescriptor ceiling_attr {
+			2,
+			{3, 2},
+			{GL_FLOAT, GL_FLOAT, GL_FLOAT},
+			{0, 3},
+			{5, 5},
+		};
+		Mesh ceiling_mesh(&ceiling.vertices, &ceiling.indices, &ceiling_attr);
+
+		TextureDescriptor text_ceiling(program_floor.id, "texture1", "res/textures/ceiling.jpg", GL_RGB);
+
+		projection_uniform = UniformDescriptor(program_floor.id, "projection");
+		camera_uniform = UniformDescriptor(program_floor.id, "look_at");
+
+		ceiling_mesh.add_uniform(std::move(projection_uniform));
+		ceiling_mesh.add_uniform(std::move(camera_uniform));
+
+		ceiling_mesh.add_texture(std::move(text_ceiling));
+		Model ceiling_model;
+		ceiling_model.add_mesh(std::move(ceiling_mesh));
+		ceiling_model.attach_program(&program_floor);
+		app.add_model(std::move(ceiling_model));
 
 		Shader vert_shader_text("src/shaders/text.vert", GL_VERTEX_SHADER);
 		Shader frag_shader_text("src/shaders/text.frag", GL_FRAGMENT_SHADER);
