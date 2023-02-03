@@ -177,6 +177,55 @@ int main() {
 		ceiling_model.attach_program(&program_floor);
 		app.add_model(std::move(ceiling_model));
 
+		// Light cube
+		Shader vert_shader_light_cube("src/shaders/light_cube.vert", GL_VERTEX_SHADER);
+		Shader frag_shader_light_cube("src/shaders/light_cube.frag", GL_FRAGMENT_SHADER);
+
+		Program program_light_cube;
+
+		program_light_cube.add_shader(&vert_shader_light_cube);
+		program_light_cube.add_shader(&frag_shader_light_cube);
+		ret = program_light_cube.link_shaders();
+		if (ret < 0) {
+			cerr<<"There was a problem linking the light cube shaders!"<<endl;
+			return -1;
+		}
+
+		float light_cube_center[3] = {0.0f, 0.65f, 0.0f};
+		Cube light_cube(0.05, light_cube_center);
+		AttributesDescriptor light_cube_attr {
+			2,
+			{3,2},
+			{GL_FLOAT, GL_FLOAT, GL_FLOAT},
+			{0, 3},
+			{5, 5},
+		};
+		Mesh light_cube_mesh(&light_cube.vertices, &light_cube.indices, &light_cube_attr);
+
+		rotate_about_x_uniform = UniformDescriptor(program_light_cube.id, "rotate_about_x");
+		rotate_about_y_uniform = UniformDescriptor(program_light_cube.id, "rotate_about_y");
+		rotate_about_z_uniform = UniformDescriptor(program_light_cube.id, "rotate_about_z");
+
+		translate_uniform = UniformDescriptor(program_light_cube.id, "translate");
+		projection_uniform = UniformDescriptor(program_light_cube.id, "projection");
+		camera_uniform = UniformDescriptor(program_light_cube.id, "look_at");
+		UniformDescriptor light_color_uniform(program_light_cube.id, "light_color");
+
+		light_cube_mesh.add_uniform(std::move(rotate_about_x_uniform));
+		light_cube_mesh.add_uniform(std::move(rotate_about_y_uniform));
+		light_cube_mesh.add_uniform(std::move(rotate_about_z_uniform));
+		light_cube_mesh.add_uniform(std::move(translate_uniform));
+		light_cube_mesh.add_uniform(std::move(projection_uniform));
+		light_cube_mesh.add_uniform(std::move(camera_uniform));
+		light_cube_mesh.add_uniform(std::move(light_color_uniform));
+
+		Model light_cube_model;
+		light_cube_model.add_mesh(std::move(light_cube_mesh));
+		light_cube_model.attach_program(&program_light_cube);
+
+		app.add_model(std::move(light_cube_model));
+
+		// Text manager setup
 		Shader vert_shader_text("src/shaders/text.vert", GL_VERTEX_SHADER);
 		Shader frag_shader_text("src/shaders/text.frag", GL_FRAGMENT_SHADER);
 
@@ -195,7 +244,6 @@ int main() {
 		app.attach_text_manager(std::move(text_manager));
 
 		app.render_models();
-
 	} catch (std::exception &e) {
 		std::cerr<<"Application error! "<<e.what()<<std::endl;
 		return -1;

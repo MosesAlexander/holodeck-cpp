@@ -375,11 +375,13 @@ void Application::render_models() {
 			mesh.render();
 		}
 
-		for (auto model_idx = 1; model_idx < models.size(); model_idx++) {
+		for (auto model_idx = 1; model_idx < (models.size() - 1); model_idx++) {
 			models[model_idx].use_program();
 			for (auto& mesh : models[model_idx].meshes) {
 				mesh.bind_vao();
-				mesh.textures[0].set_active_texture(0);
+				if (mesh.textures.size() > 0)
+					mesh.textures[0].set_active_texture(0);
+
 				mesh.uniforms[0].update(
 					std::move(
 						UniformPackedParam{
@@ -399,6 +401,62 @@ void Application::render_models() {
 				);
 			}
 			models[model_idx].render();
+		}
+
+		models[7].use_program();
+
+		for (auto& mesh : models[7].meshes) {
+			mesh.uniforms[0].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(glm::mat4(1.0f))
+					}
+				)
+			);
+			mesh.uniforms[1].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(glm::mat4(1.0f))
+					}
+				)
+			);
+			mesh.uniforms[2].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(glm::mat4(1.0f))
+					}
+				)
+			);
+			mesh.uniforms[3].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(glm::mat4(1.0f))
+					}
+				)
+			);
+			mesh.uniforms[4].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(glm::mat4(1.0f))
+					}
+				)
+			);
+			mesh.uniforms[5].update(
+				std::move(
+					UniformPackedParam{
+						type: uniform_type::Uniform4FVMatrix,
+						parammat: std::move(LookAt)
+					}
+				)
+			);
+
+			mesh.bind_vao();
+			mesh.render();
 		}
 
 		text_manager.render_text(string("Greetings mortals"), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
