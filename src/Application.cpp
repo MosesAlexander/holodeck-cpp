@@ -442,7 +442,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(glm::mat4(1.0f))
+						parammat: std::move(perspective_projection_matrix)
 					}
 				)
 			);
