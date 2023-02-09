@@ -3,8 +3,6 @@
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec2 aTexCoord;
 
-out vec3 Color;
-
 uniform mat4 rotate_about_x;
 uniform mat4 rotate_about_y;
 uniform mat4 rotate_about_z;
@@ -14,6 +12,5 @@ uniform mat4 look_at;
 
 void main()
 {
-	Color = vec3(1.0f, 1.0f, 1.0f);
 	gl_Position = projection * look_at * translate * rotate_about_x * rotate_about_y * rotate_about_z * vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }

@@ -14,7 +14,7 @@ int Application::init_window() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	window = glfwCreateWindow(1024, 768, "MyOpenGL", NULL, NULL);
+	window = glfwCreateWindow(1920, 1080, "MyOpenGL", NULL, NULL);
 	if (window == NULL) {
 		std::cerr<<"Failed to create GLFW window" <<std::endl;
 		glfwTerminate();
@@ -33,7 +33,7 @@ int Application::init_window() {
 		goto err;
 	}
 
-	glViewport(0, 0, 1024, 768);
+	glViewport(0, 0, 1920, 1080);
 	glClearColor(0.2f,0.3f,0.3f,1.0f);
 
 	// set callback so the glViewport re-adjust to window resizing
@@ -371,6 +371,13 @@ void Application::render_models() {
 				)
 			);
 
+			mesh.uniforms[7].update(
+				UniformPackedParam{
+					type: uniform_type::Uniform3FParam,
+					param3f: {1.0f, 1.0f, 1.0f}
+				}
+			);
+
 			mesh.bind_vao();
 			mesh.render();
 		}
@@ -403,6 +410,7 @@ void Application::render_models() {
 			models[model_idx].render();
 		}
 
+		// Light cube
 		models[7].use_program();
 
 		for (auto& mesh : models[7].meshes) {

@@ -46,6 +46,7 @@ int main() {
 		UniformDescriptor mixvalue_uniform(program_cube.id, "mixvalue");
 		UniformDescriptor projection_uniform(program_cube.id, "projection");
 		UniformDescriptor camera_uniform(program_cube.id, "look_at");
+		UniformDescriptor light_color_uniform(program_cube.id, "lightColor");
 
 		cube_mesh.add_uniform(std::move(rotate_about_x_uniform));
 		cube_mesh.add_uniform(std::move(rotate_about_y_uniform));
@@ -54,6 +55,7 @@ int main() {
 		cube_mesh.add_uniform(std::move(mixvalue_uniform));
 		cube_mesh.add_uniform(std::move(projection_uniform));
 		cube_mesh.add_uniform(std::move(camera_uniform));
+		cube_mesh.add_uniform(std::move(light_color_uniform));
 
 		cube_mesh.add_texture(std::move(text1_desc));
 		cube_mesh.add_texture(std::move(text2_desc));
@@ -209,7 +211,6 @@ int main() {
 		translate_uniform = UniformDescriptor(program_light_cube.id, "translate");
 		projection_uniform = UniformDescriptor(program_light_cube.id, "projection");
 		camera_uniform = UniformDescriptor(program_light_cube.id, "look_at");
-		UniformDescriptor light_color_uniform(program_light_cube.id, "light_color");
 
 		light_cube_mesh.add_uniform(std::move(rotate_about_x_uniform));
 		light_cube_mesh.add_uniform(std::move(rotate_about_y_uniform));
@@ -217,7 +218,6 @@ int main() {
 		light_cube_mesh.add_uniform(std::move(translate_uniform));
 		light_cube_mesh.add_uniform(std::move(projection_uniform));
 		light_cube_mesh.add_uniform(std::move(camera_uniform));
-		light_cube_mesh.add_uniform(std::move(light_color_uniform));
 
 		Model light_cube_model;
 		light_cube_model.add_mesh(std::move(light_cube_mesh));
