@@ -11,5 +11,7 @@ out vec4 outColor;
 
 void main()
 {
-    outColor = vec4(lightColor, 1.0f) * mix(texture(texture1, TexCoord), texture(texture2, TexCoord), mixvalue);
+    float ambientStrength = 0.1f;
+    vec3 ambient = ambientStrength * lightColor;
+    outColor = vec4(ambient, 1.0f) * mix(texture(texture1, TexCoord), texture(texture2, TexCoord), mixvalue);
 }

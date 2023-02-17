@@ -406,6 +406,15 @@ void Application::render_models() {
 						}
 					)
 				);
+
+				mesh.uniforms[2].update(
+					std::move(
+						UniformPackedParam{
+							type: uniform_type::Uniform3FParam,
+							param3f: {1.0f, 1.0f, 1.0f}
+						}
+					)
+				);
 			}
 			models[model_idx].render();
 		}
@@ -467,7 +476,7 @@ void Application::render_models() {
 			mesh.render();
 		}
 
-		text_manager.render_text(string("Greetings mortals"), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
+		//text_manager.render_text(string("Greetings mortals"), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();

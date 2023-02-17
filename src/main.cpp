@@ -96,9 +96,11 @@ int main() {
 
 		projection_uniform = UniformDescriptor(program_floor.id, "projection");
 		camera_uniform = UniformDescriptor(program_floor.id, "look_at");
+		light_color_uniform = UniformDescriptor(program_floor.id, "lightColor");
 
 		floor_mesh.add_uniform(std::move(projection_uniform));
 		floor_mesh.add_uniform(std::move(camera_uniform));
+		floor_mesh.add_uniform(std::move(light_color_uniform));
 
 		floor_mesh.add_texture(std::move(text_floor));
 		Model floor_model;
@@ -141,9 +143,11 @@ int main() {
 
 			projection_uniform = UniformDescriptor(program_floor.id, "projection");
 			camera_uniform = UniformDescriptor(program_floor.id, "look_at");
+			light_color_uniform = UniformDescriptor(program_floor.id, "lightColor");
 
 			wall_mesh.add_uniform(std::move(projection_uniform));
 			wall_mesh.add_uniform(std::move(camera_uniform));
+			wall_mesh.add_uniform(std::move(light_color_uniform));
 
 			wall_mesh.add_texture(std::move(text_wall));
 			Model wall_model;
@@ -169,9 +173,11 @@ int main() {
 
 		projection_uniform = UniformDescriptor(program_floor.id, "projection");
 		camera_uniform = UniformDescriptor(program_floor.id, "look_at");
+		light_color_uniform = UniformDescriptor(program_floor.id, "lightColor");
 
 		ceiling_mesh.add_uniform(std::move(projection_uniform));
 		ceiling_mesh.add_uniform(std::move(camera_uniform));
+		ceiling_mesh.add_uniform(std::move(light_color_uniform));
 
 		ceiling_mesh.add_texture(std::move(text_ceiling));
 		Model ceiling_model;
