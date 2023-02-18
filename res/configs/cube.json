@@ -1,0 +1,37 @@
+{
+    "object_type" : "Cube",
+    "resources" : {
+        "uniforms" : [
+            { "uniform_name" : "rotate_about_x", "uniform_type" : "mat3" },
+            { "uniform_name" : "rotate_about_y", "uniform_type" : "mat3" },
+            { "uniform_name" : "rotate_about_z", "uniform_type" : "mat3" },
+            { "uniform_name" : "translate", "uniform_type" : "mat3" },
+            { "uniform_name" : "mixvalue", "uniform_type" : "float1" },
+            { "uniform_name" : "projection", "uniform_type" : "mat3" },
+            { "uniform_name" : "look_at", "uniform_type" : "mat3" },
+            { "uniform_name" : "lightColor", "uniform_type" : "float3" }
+        ],
+        "shaders" : [
+            {
+                "filepath" : "src/shaders/cube.vert",
+                "shader_type" : "VERTEX_SHADER"
+            },
+            {
+                "filepath" : "src/shaders/cube.frag",
+                "shader_type" : "FRAGMENT_SHADER"
+            }
+        ],
+        "textures" : [
+            { "name" : "texture1", "path" : "res/textures/stallman.jpg", "format" : "RGB" },
+            { "name" : "texture2", "path" : "res/textures/gnu.png", "format" : "RGBA" }
+        ]
+    },
+    "attributes" : {
+        "field1" : 2,
+        "field2" : [3, 2],
+        "field3" : ["GL_FLOAT", "GL_FLOAT", "GL_FLOAT"],
+        "field4" : [0, 3],
+        "field5" : [5, 5],
+        "coordinates" : [0.0, 0.0, 0.0]
+    }
+}

@@ -694,3 +694,27 @@ void Application::add_model(Model&& model) {
 void Application::attach_text_manager(TextManager&& text_manager) {
 	this->text_manager = std::move(text_manager);
 }
+
+void Application::generate_configs_from_json_dir(string dir_path)
+{
+    for (const auto & entry : fs::directory_iterator(dir_path))
+    {
+		std::string config_path(entry.path());
+        std::cout << "Found config file: " << config_path << std::endl;
+
+		world_configs.push_back(JsonConfig(config_path));
+    }
+}
+
+void Application::generate_models_from_configs() {
+	for (auto json_conf : world_configs) {
+		switch(json_conf.get_object_type())
+		{
+			case object_type::Cube:
+				cout << "Found a cube"<<endl;
+				break;
+			case object_type::None:
+				break;
+		}
+	}
+}

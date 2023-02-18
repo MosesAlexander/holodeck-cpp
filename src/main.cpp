@@ -11,6 +11,11 @@ int main() {
 		Application app;
 		int ret = 0;
 
+		app.generate_configs_from_json_dir("res/configs/");
+		app.generate_models_from_configs();
+
+		return 0;
+
 		Shader vert_shader_cube("src/shaders/cube.vert", GL_VERTEX_SHADER);
 		Shader frag_shader_cube("src/shaders/cube.frag", GL_FRAGMENT_SHADER);
 

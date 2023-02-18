@@ -22,11 +22,14 @@
 #include "Model.hpp"
 #include "TextManager.hpp"
 #include "Exception.hpp"
+#include "JsonConfig.hpp"
+#include <filesystem>
 
 struct Model;
 struct TextManager;
 
 using namespace std;
+namespace fs = std::filesystem;
 
 class Application
 {
@@ -37,10 +40,13 @@ public:
 	void render_models();
 	void add_model(Model&& model);
 	void attach_text_manager(TextManager&&);
+	void generate_configs_from_json_dir(string directory);
+	void generate_models_from_configs();
 private:
     GLFWwindow *window;
 	vector<Model> models;
 	TextManager text_manager;
+	vector<JsonConfig> world_configs;
     int init_window();
 	void process_input(
 		bool& moving_up,
