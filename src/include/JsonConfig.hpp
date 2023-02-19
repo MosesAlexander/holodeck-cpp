@@ -9,6 +9,8 @@ using json = nlohmann::json;
 
 enum class object_type {
     Cube,
+    Floor,
+    Wall,
     None
 };
 

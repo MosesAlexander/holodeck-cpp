@@ -25,6 +25,7 @@
 #include "Exception.hpp"
 #include "JsonConfig.hpp"
 #include "Cube.hpp"
+#include "Quad.hpp"
 
 struct Model;
 struct TextManager;

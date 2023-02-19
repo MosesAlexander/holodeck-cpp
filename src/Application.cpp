@@ -748,7 +748,7 @@ int Application::generate_models_from_configs() {
 	for (auto json_conf : world_configs) {
 		vector<float> vertices;
 		vector<GLuint> indices;
-		
+
 		switch(json_conf.get_object_type())
 		{
 			case object_type::Cube:
@@ -758,15 +758,44 @@ int Application::generate_models_from_configs() {
 				Cube cube(side_length, center_vec.data());
 				vertices = cube.vertices;
 				indices = cube.indices;
-
-				break;
 			}
+			break;
+			case object_type::Floor:
+			{
+				auto center_vec = json_conf.mData["attributes"]["center"].get<vector<float>>();
+				auto floor_center_vec = json_conf.mData["attributes"]["floor_center_offset"].get<vector<float>>();
+				auto scale_vec = json_conf.mData["attributes"]["scale_factor"].get<vector<float>>(); 
+				ScaleFactor floor_scale_factor{scale_vec[0], scale_vec[1]};
+				auto width = json_conf.mData["attributes"]["width"].get<float>(); 
+				auto height = json_conf.mData["attributes"]["height"].get<float>(); 
+				Quad floor{width, height, floor_center_vec.data(), center_vec.data(), floor_scale_factor};
+				vertices = floor.vertices;
+				indices = floor.indices;
+			}
+			break;
+			case object_type::Wall:
+			{
+				auto width = json_conf.mData["attributes"]["width"].get<float>(); 
+				auto height = json_conf.mData["attributes"]["height"].get<float>(); 
+				auto scale_vec = json_conf.mData["attributes"]["scale_factor"].get<vector<float>>(); 
+				auto wall_offset = json_conf.mData["attributes"]["wall_offset"].get<vector<float>>();
+				Quad wall {
+					width,
+					height,
+					wall_offset.data(),
+					wall_offset.data(),
+					ScaleFactor{scale_vec[0], scale_vec[1]}
+				};
+				vertices = wall.vertices;
+				indices = wall.indices;
+			}
+			break;
 			case object_type::None:
 			{
 				cerr << "Error, object type not supported" << endl;
 				return -1;
-				break;
 			}
+			break;
 		}
 
 		cout << "Found a cube"<<endl;
