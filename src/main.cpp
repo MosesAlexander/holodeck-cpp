@@ -47,15 +47,15 @@ int main() {
 		TextureDescriptor text1_desc(program_cube.id, "texture1", "res/textures/stallman.jpg", GL_RGB);
 		TextureDescriptor text2_desc(program_cube.id, "texture2", "res/textures/gnu.png", GL_RGBA);
 
-		UniformDescriptor rotate_about_x_uniform(program_cube.id, "rotate_about_x");
-		UniformDescriptor rotate_about_y_uniform(program_cube.id, "rotate_about_y");
-		UniformDescriptor rotate_about_z_uniform(program_cube.id, "rotate_about_z");
+		UniformDescriptor rotate_about_x_uniform(program_cube.id, "rotate_about_x", uniform_type::Uniform4FVMatrix);
+		UniformDescriptor rotate_about_y_uniform(program_cube.id, "rotate_about_y", uniform_type::Uniform4FVMatrix);
+		UniformDescriptor rotate_about_z_uniform(program_cube.id, "rotate_about_z", uniform_type::Uniform4FVMatrix);
 
-		UniformDescriptor translate_uniform(program_cube.id, "translate");
-		UniformDescriptor mixvalue_uniform(program_cube.id, "mixvalue");
-		UniformDescriptor projection_uniform(program_cube.id, "projection");
-		UniformDescriptor camera_uniform(program_cube.id, "look_at");
-		UniformDescriptor light_color_uniform(program_cube.id, "lightColor");
+		UniformDescriptor translate_uniform(program_cube.id, "translate", uniform_type::Uniform4FVMatrix);
+		UniformDescriptor mixvalue_uniform(program_cube.id, "mixvalue", uniform_type::Uniform1FParam);
+		UniformDescriptor projection_uniform(program_cube.id, "projection", uniform_type::Uniform4FVMatrix);
+		UniformDescriptor camera_uniform(program_cube.id, "look_at", uniform_type::Uniform4FVMatrix);
+		UniformDescriptor light_color_uniform(program_cube.id, "lightColor", uniform_type::Uniform3FParam);
 
 		cube_mesh.add_uniform(std::move(rotate_about_x_uniform));
 		cube_mesh.add_uniform(std::move(rotate_about_y_uniform));
@@ -103,9 +103,9 @@ int main() {
 
 		TextureDescriptor text_floor(program_floor.id, "texture1", "res/textures/concrete_floor.jpg", GL_RGB);
 
-		projection_uniform = UniformDescriptor(program_floor.id, "projection");
-		camera_uniform = UniformDescriptor(program_floor.id, "look_at");
-		light_color_uniform = UniformDescriptor(program_floor.id, "lightColor");
+		projection_uniform = UniformDescriptor(program_floor.id, "projection", uniform_type::Uniform4FVMatrix);
+		camera_uniform = UniformDescriptor(program_floor.id, "look_at", uniform_type::Uniform4FVMatrix);
+		light_color_uniform = UniformDescriptor(program_floor.id, "lightColor", uniform_type::Uniform3FParam);
 
 		floor_mesh.add_uniform(std::move(projection_uniform));
 		floor_mesh.add_uniform(std::move(camera_uniform));
@@ -150,9 +150,9 @@ int main() {
 
 			TextureDescriptor text_wall(program_floor.id, "texture1", "res/textures/brick_wall.jpg", GL_RGB);
 
-			projection_uniform = UniformDescriptor(program_floor.id, "projection");
-			camera_uniform = UniformDescriptor(program_floor.id, "look_at");
-			light_color_uniform = UniformDescriptor(program_floor.id, "lightColor");
+			projection_uniform = UniformDescriptor(program_floor.id, "projection", uniform_type::Uniform4FVMatrix);
+			camera_uniform = UniformDescriptor(program_floor.id, "look_at", uniform_type::Uniform4FVMatrix);
+			light_color_uniform = UniformDescriptor(program_floor.id, "lightColor", uniform_type::Uniform3FParam);
 
 			wall_mesh.add_uniform(std::move(projection_uniform));
 			wall_mesh.add_uniform(std::move(camera_uniform));
@@ -180,9 +180,9 @@ int main() {
 
 		TextureDescriptor text_ceiling(program_floor.id, "texture1", "res/textures/ceiling.jpg", GL_RGB);
 
-		projection_uniform = UniformDescriptor(program_floor.id, "projection");
-		camera_uniform = UniformDescriptor(program_floor.id, "look_at");
-		light_color_uniform = UniformDescriptor(program_floor.id, "lightColor");
+		projection_uniform = UniformDescriptor(program_floor.id, "projection", uniform_type::Uniform4FVMatrix);
+		camera_uniform = UniformDescriptor(program_floor.id, "look_at", uniform_type::Uniform4FVMatrix);
+		light_color_uniform = UniformDescriptor(program_floor.id, "lightColor", uniform_type::Uniform3FParam);
 
 		ceiling_mesh.add_uniform(std::move(projection_uniform));
 		ceiling_mesh.add_uniform(std::move(camera_uniform));
@@ -219,13 +219,13 @@ int main() {
 		};
 		Mesh light_cube_mesh(&light_cube.vertices, &light_cube.indices, &light_cube_attr);
 
-		rotate_about_x_uniform = UniformDescriptor(program_light_cube.id, "rotate_about_x");
-		rotate_about_y_uniform = UniformDescriptor(program_light_cube.id, "rotate_about_y");
-		rotate_about_z_uniform = UniformDescriptor(program_light_cube.id, "rotate_about_z");
+		rotate_about_x_uniform = UniformDescriptor(program_light_cube.id, "rotate_about_x", uniform_type::Uniform4FVMatrix);
+		rotate_about_y_uniform = UniformDescriptor(program_light_cube.id, "rotate_about_y", uniform_type::Uniform4FVMatrix);
+		rotate_about_z_uniform = UniformDescriptor(program_light_cube.id, "rotate_about_z", uniform_type::Uniform4FVMatrix);
 
-		translate_uniform = UniformDescriptor(program_light_cube.id, "translate");
-		projection_uniform = UniformDescriptor(program_light_cube.id, "projection");
-		camera_uniform = UniformDescriptor(program_light_cube.id, "look_at");
+		translate_uniform = UniformDescriptor(program_light_cube.id, "translate", uniform_type::Uniform4FVMatrix);
+		projection_uniform = UniformDescriptor(program_light_cube.id, "projection", uniform_type::Uniform4FVMatrix);
+		camera_uniform = UniformDescriptor(program_light_cube.id, "look_at", uniform_type::Uniform4FVMatrix);
 
 		light_cube_mesh.add_uniform(std::move(rotate_about_x_uniform));
 		light_cube_mesh.add_uniform(std::move(rotate_about_y_uniform));

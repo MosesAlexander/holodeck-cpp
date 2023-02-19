@@ -1,10 +1,12 @@
 #include "Uniform.hpp"
+#include <iostream>
 
-UniformDescriptor::UniformDescriptor(GLuint program_id, const char *uniform_name) {
+UniformDescriptor::UniformDescriptor(GLuint program_id, const char *uniform_name, uniform_type type) {
     uniform_shader_handle = glGetUniformLocation(
         program_id,
         uniform_name
     );
+    this->type = type;
 }
 
 void UniformDescriptor::update(const UniformPackedParam& packedparam) {
@@ -31,16 +33,21 @@ void UniformDescriptor::update(const UniformPackedParam& packedparam) {
                 glm::value_ptr(packedparam.parammat)
             );
         break;
+        case uniform_type::Undefined:
+            std::cerr << "Uniform type undefined!" <<std::endl;
+        break;
     }
 }
 
 UniformDescriptor::UniformDescriptor(UniformDescriptor&& source) {
     uniform_shader_handle = source.uniform_shader_handle;
     source.uniform_shader_handle = 0;
+    this->type = source.type;
 }
 
 UniformDescriptor& UniformDescriptor::operator=(const UniformDescriptor& source) {
     uniform_shader_handle = source.uniform_shader_handle;
+    this->type = source.type;
 
     return *this;
 }

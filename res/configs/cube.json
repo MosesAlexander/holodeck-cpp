@@ -2,14 +2,14 @@
     "object_type" : "Cube",
     "resources" : {
         "uniforms" : [
-            { "uniform_name" : "rotate_about_x", "uniform_type" : "mat3" },
-            { "uniform_name" : "rotate_about_y", "uniform_type" : "mat3" },
-            { "uniform_name" : "rotate_about_z", "uniform_type" : "mat3" },
-            { "uniform_name" : "translate", "uniform_type" : "mat3" },
+            { "uniform_name" : "rotate_about_x", "uniform_type" : "mat4f" },
+            { "uniform_name" : "rotate_about_y", "uniform_type" : "mat4f" },
+            { "uniform_name" : "rotate_about_z", "uniform_type" : "mat4f" },
+            { "uniform_name" : "translate", "uniform_type" : "mat4f" },
             { "uniform_name" : "mixvalue", "uniform_type" : "float1" },
-            { "uniform_name" : "projection", "uniform_type" : "mat3" },
-            { "uniform_name" : "look_at", "uniform_type" : "mat3" },
-            { "uniform_name" : "lightColor", "uniform_type" : "float3" }
+            { "uniform_name" : "projection", "uniform_type" : "mat4f" },
+            { "uniform_name" : "look_at", "uniform_type" : "mat4f" },
+            { "uniform_name" : "lightColor", "uniform_type" : "vec3f" }
         ],
         "shaders" : [
             {
@@ -27,11 +27,12 @@
         ]
     },
     "attributes" : {
-        "field1" : 2,
-        "field2" : [3, 2],
-        "field3" : ["GL_FLOAT", "GL_FLOAT", "GL_FLOAT"],
-        "field4" : [0, 3],
-        "field5" : [5, 5],
-        "center" : [0.0, 0.0, 0.0]
+        "component_groups" : 2,
+        "component_nums" : [3, 2],
+        "component_types" : ["GL_FLOAT", "GL_FLOAT", "GL_FLOAT"],
+        "component_offsets" : [0, 3],
+        "component_strides" : [5, 5],
+        "center" : [0.0, 0.0, 0.0],
+        "side_length" : 0.1
     }
 }

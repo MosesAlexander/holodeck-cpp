@@ -713,7 +713,35 @@ GLenum parse_shader_type(string shader_type)
 	if (shader_type == "FRAGMENT_SHADER")
 		return GL_FRAGMENT_SHADER;
 	
+	cerr<<"ERROR: unrecognized shader type!"<<endl;
 	return 0x0;
+}
+
+GLenum parse_gl_type(string gl_type) {
+	if (gl_type == "GL_FLOAT")
+		return GL_FLOAT;
+	if (gl_type == "GL_UINT")
+		return GL_UNSIGNED_INT;
+	if (gl_type == "RGB")
+		return GL_RGB;
+	if (gl_type == "RGBA")
+		return GL_RGBA;
+
+	cerr<<"ERROR: unrecognized GL type!"<<endl;
+	return 0;
+}
+
+uniform_type parse_uniform_type(string type_str) {
+	if (type_str == "mat4f")
+		return uniform_type::Uniform4FVMatrix;
+	if (type_str == "float1")
+		return uniform_type::Uniform1FParam;
+	if (type_str == "vec3f")
+		return uniform_type::Uniform3FParam;
+	if (type_str == "int1")
+		return uniform_type::Uniform1IParam;
+	
+	return uniform_type::Undefined;
 }
 
 int Application::generate_models_from_configs() {
@@ -742,8 +770,54 @@ int Application::generate_models_from_configs() {
 					return -1;
 				}
 
-				auto center_vec = json_conf.mData["attributes"]["center"];
+				auto center_vec = json_conf.mData["attributes"]["center"].get<vector<float>>();
+				float side_length = json_conf.mData["attributes"]["side_length"].get<float>();
 
+				unsigned int component_groups = json_conf.mData["attributes"]["component_groups"].get<unsigned int>();
+				vector<int> component_nums = json_conf.mData["attributes"]["component_nums"].get<vector<int>>();
+				vector<string> component_types_strings = json_conf.mData["attributes"]["component_types"].get<vector<string>>();
+				vector<uint32_t> component_offsets = json_conf.mData["attributes"]["component_offsets"].get<vector<uint32_t>>();
+				vector<int> component_strides = json_conf.mData["attributes"]["component_strides"].get<vector<int>>();
+				vector<GLenum> component_types;
+
+				for (auto &type_str : component_types_strings) {
+					component_types.push_back(parse_gl_type(type_str));
+				}
+
+				Cube cube(side_length, center_vec.data());
+				AttributesDescriptor attr {
+					component_groups,
+					component_nums,
+					component_types,
+					component_offsets,
+					component_strides
+				};
+				Mesh mesh(&cube.vertices, &cube.indices, &attr);
+				vector<TextureDescriptor> textures;
+				for (auto &texture_json : json_conf.mData["resources"]["textures"])
+				{
+					TextureDescriptor text_desc(
+						program.id,
+						texture_json["name"].get<string>().c_str(),
+						texture_json["path"].get<string>().c_str(),
+						parse_gl_type(texture_json["format"].get<string>()));
+					mesh.add_texture(std::move(text_desc));
+				}
+
+				for (auto &uniform_json : json_conf.mData["resources"]["uniforms"]) {
+					UniformDescriptor uniform_desc(
+						program.id,
+						uniform_json["uniform_name"].get<string>().c_str(),
+						parse_uniform_type(uniform_json["uniform_type"].get<string>())
+					);
+					mesh.add_uniform(std::move(uniform_desc));
+				}
+
+				Model model;
+				model.add_mesh(std::move(mesh));
+				model.attach_program(&program);
+				
+				add_model(std::move(model));
 
 				break;
 			}

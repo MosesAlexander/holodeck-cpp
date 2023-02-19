@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <numbers>
 #include <map>
+#include <filesystem>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -23,7 +24,7 @@
 #include "TextManager.hpp"
 #include "Exception.hpp"
 #include "JsonConfig.hpp"
-#include <filesystem>
+#include "Cube.hpp"
 
 struct Model;
 struct TextManager;

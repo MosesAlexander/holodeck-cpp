@@ -12,6 +12,7 @@ enum class uniform_type {
     Uniform1IParam,
     Uniform1FParam,
     Uniform4FVMatrix,
+    Undefined
 };
 
 struct UniformPackedParam {
@@ -26,8 +27,9 @@ struct UniformPackedParam {
 
 struct UniformDescriptor {
     GLint uniform_shader_handle;
+    uniform_type type;
 
-    UniformDescriptor(GLuint program_id, const char *uniform_name);
+    UniformDescriptor(GLuint program_id, const char *uniform_name, uniform_type type);
     UniformDescriptor(UniformDescriptor&&);
     UniformDescriptor() : uniform_shader_handle(0) {};
     UniformDescriptor& operator=(const UniformDescriptor&);
