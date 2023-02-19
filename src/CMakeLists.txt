@@ -13,6 +13,7 @@ add_executable(holodeck main.cpp
                         Texture.cpp
                         TextManager.cpp
                         JsonConfig.cpp
+                        InputState.cpp
                         glad.c)
 
 project(holodeck)

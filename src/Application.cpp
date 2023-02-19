@@ -101,13 +101,13 @@ void Application::render_models() {
 	models[0].use_program();
 
 	glm::mat4 perspective_projection_matrix = glm::perspective(
-			glm::radians(fov_val), 1024.0f / 768.0f, 0.1f, 100.0f);
+			glm::radians(fov_val), 1920.0f / 1080.0f, 0.1f, 100.0f);
 
 	models[0].meshes[0].uniforms[5].update(
 		std::move(
 			UniformPackedParam{
 				type: uniform_type::Uniform4FVMatrix,
-				parammat: std::move(perspective_projection_matrix)
+				parammat: perspective_projection_matrix
 			}
 		)
 	);
@@ -117,110 +117,7 @@ void Application::render_models() {
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		process_input(
-			moving_up,
-			moving_down,
-			moving_left,
-			moving_right,
-			moving_in,
-			moving_out,
-			x_rot_cwise,
-			x_rot_ccwise,
-			y_rot_cwise,
-			y_rot_ccwise,
-			z_rot_cwise,
-			z_rot_ccwise,
-			reset_all_angles,
-			mixvalue_grow,
-			mixvalue_shrink,
-			camera_moving_forwards,
-			camera_moving_backwards,
-			camera_moving_down,
-			camera_moving_up,
-			camera_moving_left,
-			camera_moving_right,
-			zoom_in,
-			zoom_out,
-			reset_zoom
-		);
-
-		if (moving_in == true) {
-			cur_off_z += 0.02f;
-		}
-		if (moving_out == true) {
-			cur_off_z -= 0.02f;
-		}
-		if (moving_down == true) {
-			cur_off_y -= 0.02f;
-		}
-		if (moving_up == true) {
-			cur_off_y += 0.02f;
-		}
-		if (moving_left == true) {
-			cur_off_x -= 0.02f;
-		}
-		if (moving_right == true) {
-			cur_off_x += 0.02f;
-		}
-
-		if (x_rot_ccwise == true) {
-			x_angle_multiplier += 0.01f;
-		}
-		if (x_rot_cwise == true) {
-			x_angle_multiplier -= 0.01f;
-		}
-
-		if (y_rot_ccwise == true) {
-			y_angle_multiplier += 0.01f;
-		}
-		if (y_rot_cwise == true) {
-			y_angle_multiplier -= 0.01f;
-		}
-
-		if (z_rot_ccwise == true) {
-			z_angle_multiplier += 0.01f;
-		}
-		if (z_rot_cwise == true) {
-			z_angle_multiplier -= 0.01f;
-		}
-
-		if (reset_all_angles == true) {
-			x_angle_multiplier = 0.0f;
-			y_angle_multiplier = 0.0f;
-			z_angle_multiplier = 0.0f;
-		}
-
-		if (zoom_in == true) {
-			if (fov_val > 0.0f) {
-				fov_val -= 0.2f;
-			}
-		} 
-
-		if (zoom_out == true) {
-			if (fov_val < 360.0f) {
-				fov_val += 0.2f;
-			}
-		}
-
-		if (reset_zoom == true) {
-			fov_val = 45.0f;
-		}
-
-		if (zoom_out == true || zoom_in == true || reset_zoom == true) {
-			models[0].use_program();
-
-			glm::mat4 perspective_projection_matrix = glm::perspective(
-					glm::radians(fov_val), 1024.0f / 768.0f, 0.1f, 100.0f);
-
-			models[0].meshes[0].uniforms[5].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(perspective_projection_matrix)
-					}
-				)
-			);
-		}
+		inputState.process_input(window);
 
 		auto model = glm::mat4(1.0f);
 		auto rotate_about_x_axis = glm::rotate(model, M_PIf * x_angle_multiplier, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -228,16 +125,6 @@ void Application::render_models() {
 		auto rotate_about_z_axis = glm::rotate(model, M_PIf * z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
 		auto translation_matrix = glm::translate(model, glm::vec3(cur_off_x, cur_off_y, cur_off_z));
 
-
-		if (mixvalue_grow == true) {
-			mixvalue += 0.02f;
-		}
-
-		if (mixvalue_shrink == true) {
-			mixvalue -= 0.02f;
-		}
-
-		glfwGetCursorPos(window, &current_cursor_x, &current_cursor_y);
 
 		float cursor_x_diff = last_cursor_x - current_cursor_x;
 		last_cursor_x = current_cursor_x;
@@ -326,7 +213,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(rotate_about_x_axis)
+						parammat: rotate_about_x_axis
 					}
 				)
 			);
@@ -334,7 +221,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(rotate_about_y_axis)
+						parammat: rotate_about_y_axis
 					}
 				)
 			);
@@ -342,7 +229,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(rotate_about_z_axis)
+						parammat: rotate_about_z_axis
 					}
 				)
 			);
@@ -350,7 +237,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(translation_matrix)
+						parammat: translation_matrix
 					}
 				)
 			);
@@ -366,7 +253,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(LookAt)
+						parammat: LookAt
 					}
 				)
 			);
@@ -393,7 +280,7 @@ void Application::render_models() {
 					std::move(
 						UniformPackedParam{
 							type: uniform_type::Uniform4FVMatrix,
-							parammat: std::move(perspective_projection_matrix)
+							parammat: perspective_projection_matrix
 						}
 					)
 				);
@@ -402,7 +289,7 @@ void Application::render_models() {
 					std::move(
 						UniformPackedParam{
 							type: uniform_type::Uniform4FVMatrix,
-							parammat: std::move(LookAt)
+							parammat: LookAt
 						}
 					)
 				);
@@ -427,7 +314,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(glm::mat4(1.0f))
+						parammat: glm::mat4(1.0f)
 					}
 				)
 			);
@@ -435,7 +322,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(glm::mat4(1.0f))
+						parammat: glm::mat4(1.0f)
 					}
 				)
 			);
@@ -443,7 +330,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(glm::mat4(1.0f))
+						parammat: glm::mat4(1.0f)
 					}
 				)
 			);
@@ -451,7 +338,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(glm::mat4(1.0f))
+						parammat: glm::mat4(1.0f)
 					}
 				)
 			);
@@ -459,7 +346,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(perspective_projection_matrix)
+						parammat: perspective_projection_matrix
 					}
 				)
 			);
@@ -467,7 +354,7 @@ void Application::render_models() {
 				std::move(
 					UniformPackedParam{
 						type: uniform_type::Uniform4FVMatrix,
-						parammat: std::move(LookAt)
+						parammat: LookAt
 					}
 				)
 			);

@@ -12,6 +12,12 @@ object_type JsonConfig::get_object_type() {
     if (mData["object_type"] == "Cube") {
         return object_type::Cube;
     }
+    if (mData["object_type"] == "Wall") {
+        return object_type::Wall;
+    }
+    if (mData["object_type"] == "Floor") {
+        return object_type::Floor;
+    }
 
     return object_type::None;
 }

@@ -2,12 +2,12 @@
     "object_type" : "Cube",
     "resources" : {
         "uniforms" : [
+            { "uniform_name" : "projection", "uniform_type" : "mat4f" },
+            { "uniform_name" : "look_at", "uniform_type" : "mat4f" },
             { "uniform_name" : "rotate_about_x", "uniform_type" : "mat4f" },
             { "uniform_name" : "rotate_about_y", "uniform_type" : "mat4f" },
             { "uniform_name" : "rotate_about_z", "uniform_type" : "mat4f" },
-            { "uniform_name" : "translate", "uniform_type" : "mat4f" },
-            { "uniform_name" : "projection", "uniform_type" : "mat4f" },
-            { "uniform_name" : "look_at", "uniform_type" : "mat4f" },
+            { "uniform_name" : "translate", "uniform_type" : "mat4f" }
         ],
         "shaders" : [
             {

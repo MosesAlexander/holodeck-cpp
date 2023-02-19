@@ -18,8 +18,7 @@ int main() {
 			return -1;
 		}
 
-		return 0;
-
+		/*
 		Shader vert_shader_cube("src/shaders/cube.vert", GL_VERTEX_SHADER);
 		Shader frag_shader_cube("src/shaders/cube.frag", GL_FRAGMENT_SHADER);
 
@@ -239,6 +238,7 @@ int main() {
 		light_cube_model.attach_program(&program_light_cube);
 
 		app.add_model(std::move(light_cube_model));
+		*/
 
 		// Text manager setup
 		Shader vert_shader_text("src/shaders/text.vert", GL_VERTEX_SHADER);

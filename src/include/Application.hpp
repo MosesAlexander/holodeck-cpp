@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -26,6 +25,7 @@
 #include "JsonConfig.hpp"
 #include "Cube.hpp"
 #include "Quad.hpp"
+#include "InputState.hpp"
 
 struct Model;
 struct TextManager;
@@ -49,6 +49,7 @@ private:
 	vector<Model> models;
 	TextManager text_manager;
 	vector<JsonConfig> world_configs;
+	InputState inputState;
     int init_window();
 	void process_input(
 		bool& moving_up,

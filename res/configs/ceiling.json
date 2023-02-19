@@ -17,7 +17,7 @@
             }
         ],
         "textures" : [
-            { "name" : "texture1", "path" : "res/textures/ceiling.jpg", "format" : "RGB" },
+            { "name" : "texture1", "path" : "res/textures/ceiling.jpg", "format" : "RGB" }
         ]
     },
     "attributes" : {
