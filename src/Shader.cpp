@@ -56,5 +56,18 @@ Shader::Shader(const char *source, GLenum kind) {
 }
 
 Shader::~Shader() {
-    glDeleteShader(id);
+    if (id != 0)
+        glDeleteShader(id);
+}
+
+Shader::Shader(Shader &&source) {
+    this->id = source.id;
+    source.id = 0;
+}
+
+Shader& Shader::operator=(Shader&& source) {
+    this->id = source.id;
+    source.id = 0;
+
+    return *this;
 }

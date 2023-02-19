@@ -41,7 +41,7 @@ public:
 	void add_model(Model&& model);
 	void attach_text_manager(TextManager&&);
 	void generate_configs_from_json_dir(string directory);
-	void generate_models_from_configs();
+	int generate_models_from_configs();
 private:
     GLFWwindow *window;
 	vector<Model> models;

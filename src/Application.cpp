@@ -706,15 +706,55 @@ void Application::generate_configs_from_json_dir(string dir_path)
     }
 }
 
-void Application::generate_models_from_configs() {
+GLenum parse_shader_type(string shader_type)
+{
+	if (shader_type == "VERTEX_SHADER")
+		return GL_VERTEX_SHADER;
+	if (shader_type == "FRAGMENT_SHADER")
+		return GL_FRAGMENT_SHADER;
+	
+	return 0x0;
+}
+
+int Application::generate_models_from_configs() {
 	for (auto json_conf : world_configs) {
 		switch(json_conf.get_object_type())
 		{
 			case object_type::Cube:
+			{
 				cout << "Found a cube"<<endl;
+				vector<Shader> shaders;
+				for (auto &shader_json : json_conf.mData["resources"]["shaders"])
+				{
+					cout << "Shader found: " << shader_json["filepath"] << " shader type: " << shader_json["shader_type"] << endl;
+					Shader shader(shader_json["filepath"].get<string>().c_str(), parse_shader_type(shader_json["shader_type"]));
+					shaders.push_back(std::move(shader));
+				}
+				Program program;
+
+				for (auto &shader : shaders) {
+					program.add_shader(&shader);
+				}
+
+				int ret = program.link_shaders();
+				if (ret < 0) {
+					cerr << "There was a problem linking the cube shaders!" << endl;
+					return -1;
+				}
+
+				auto center_vec = json_conf.mData["attributes"]["center"];
+
+
 				break;
+			}
 			case object_type::None:
+			{
+				cerr << "Error, object type not supported" << endl;
+				return -1;
 				break;
+			}
 		}
 	}
+
+	return 0;
 }

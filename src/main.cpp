@@ -12,7 +12,11 @@ int main() {
 		int ret = 0;
 
 		app.generate_configs_from_json_dir("res/configs/");
-		app.generate_models_from_configs();
+		ret = app.generate_models_from_configs();
+		if (ret < 0) {
+			cerr << "Error generating models from configs"<<endl;
+			return -1;
+		}
 
 		return 0;
 

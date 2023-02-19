@@ -14,9 +14,10 @@ using namespace std;
 
 struct Shader {
     GLuint id;
-    std::string source;
 
     Shader(const char *source, GLenum kind);
+    Shader(Shader &&);
+    Shader& operator=(Shader &&);
     ~Shader();
 };
 
