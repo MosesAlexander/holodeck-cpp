@@ -746,78 +746,18 @@ uniform_type parse_uniform_type(string type_str) {
 
 int Application::generate_models_from_configs() {
 	for (auto json_conf : world_configs) {
+		vector<float> vertices;
+		vector<GLuint> indices;
+		
 		switch(json_conf.get_object_type())
 		{
 			case object_type::Cube:
 			{
-				cout << "Found a cube"<<endl;
-				vector<Shader> shaders;
-				for (auto &shader_json : json_conf.mData["resources"]["shaders"])
-				{
-					cout << "Shader found: " << shader_json["filepath"] << " shader type: " << shader_json["shader_type"] << endl;
-					Shader shader(shader_json["filepath"].get<string>().c_str(), parse_shader_type(shader_json["shader_type"]));
-					shaders.push_back(std::move(shader));
-				}
-				Program program;
-
-				for (auto &shader : shaders) {
-					program.add_shader(&shader);
-				}
-
-				int ret = program.link_shaders();
-				if (ret < 0) {
-					cerr << "There was a problem linking the cube shaders!" << endl;
-					return -1;
-				}
-
 				auto center_vec = json_conf.mData["attributes"]["center"].get<vector<float>>();
 				float side_length = json_conf.mData["attributes"]["side_length"].get<float>();
-
-				unsigned int component_groups = json_conf.mData["attributes"]["component_groups"].get<unsigned int>();
-				vector<int> component_nums = json_conf.mData["attributes"]["component_nums"].get<vector<int>>();
-				vector<string> component_types_strings = json_conf.mData["attributes"]["component_types"].get<vector<string>>();
-				vector<uint32_t> component_offsets = json_conf.mData["attributes"]["component_offsets"].get<vector<uint32_t>>();
-				vector<int> component_strides = json_conf.mData["attributes"]["component_strides"].get<vector<int>>();
-				vector<GLenum> component_types;
-
-				for (auto &type_str : component_types_strings) {
-					component_types.push_back(parse_gl_type(type_str));
-				}
-
 				Cube cube(side_length, center_vec.data());
-				AttributesDescriptor attr {
-					component_groups,
-					component_nums,
-					component_types,
-					component_offsets,
-					component_strides
-				};
-				Mesh mesh(&cube.vertices, &cube.indices, &attr);
-				vector<TextureDescriptor> textures;
-				for (auto &texture_json : json_conf.mData["resources"]["textures"])
-				{
-					TextureDescriptor text_desc(
-						program.id,
-						texture_json["name"].get<string>().c_str(),
-						texture_json["path"].get<string>().c_str(),
-						parse_gl_type(texture_json["format"].get<string>()));
-					mesh.add_texture(std::move(text_desc));
-				}
-
-				for (auto &uniform_json : json_conf.mData["resources"]["uniforms"]) {
-					UniformDescriptor uniform_desc(
-						program.id,
-						uniform_json["uniform_name"].get<string>().c_str(),
-						parse_uniform_type(uniform_json["uniform_type"].get<string>())
-					);
-					mesh.add_uniform(std::move(uniform_desc));
-				}
-
-				Model model;
-				model.add_mesh(std::move(mesh));
-				model.attach_program(&program);
-				
-				add_model(std::move(model));
+				vertices = cube.vertices;
+				indices = cube.indices;
 
 				break;
 			}
@@ -828,6 +768,74 @@ int Application::generate_models_from_configs() {
 				break;
 			}
 		}
+
+		cout << "Found a cube"<<endl;
+		vector<Shader> shaders;
+		for (auto &shader_json : json_conf.mData["resources"]["shaders"])
+		{
+			cout << "Shader found: " << shader_json["filepath"] << " shader type: " << shader_json["shader_type"] << endl;
+			Shader shader(shader_json["filepath"].get<string>().c_str(), parse_shader_type(shader_json["shader_type"]));
+			shaders.push_back(std::move(shader));
+		}
+		Program program;
+
+		for (auto &shader : shaders) {
+			program.add_shader(&shader);
+		}
+
+		int ret = program.link_shaders();
+		if (ret < 0) {
+			cerr << "There was a problem linking the cube shaders!" << endl;
+			return -1;
+		}
+
+
+		unsigned int component_groups = json_conf.mData["attributes"]["component_groups"].get<unsigned int>();
+		vector<int> component_nums = json_conf.mData["attributes"]["component_nums"].get<vector<int>>();
+		vector<string> component_types_strings = json_conf.mData["attributes"]["component_types"].get<vector<string>>();
+		vector<uint32_t> component_offsets = json_conf.mData["attributes"]["component_offsets"].get<vector<uint32_t>>();
+		vector<int> component_strides = json_conf.mData["attributes"]["component_strides"].get<vector<int>>();
+		vector<GLenum> component_types;
+
+		for (auto &type_str : component_types_strings) {
+			component_types.push_back(parse_gl_type(type_str));
+		}
+
+		AttributesDescriptor attr {
+			component_groups,
+			component_nums,
+			component_types,
+			component_offsets,
+			component_strides
+		};
+
+		Mesh mesh(&vertices, &indices, &attr);
+		vector<TextureDescriptor> textures;
+		for (auto &texture_json : json_conf.mData["resources"]["textures"])
+		{
+			TextureDescriptor text_desc(
+				program.id,
+				texture_json["name"].get<string>().c_str(),
+				texture_json["path"].get<string>().c_str(),
+				parse_gl_type(texture_json["format"].get<string>()));
+			mesh.add_texture(std::move(text_desc));
+		}
+
+		for (auto &uniform_json : json_conf.mData["resources"]["uniforms"]) {
+			UniformDescriptor uniform_desc(
+				program.id,
+				uniform_json["uniform_name"].get<string>().c_str(),
+				parse_uniform_type(uniform_json["uniform_type"].get<string>())
+			);
+			mesh.add_uniform(std::move(uniform_desc));
+		}
+
+		Model model;
+		model.add_mesh(std::move(mesh));
+		model.attach_program(&program);
+		
+		add_model(std::move(model));
+
 	}
 
 	return 0;
