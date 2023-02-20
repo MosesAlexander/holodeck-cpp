@@ -215,4 +215,20 @@ void InputState::update() {
     if (mixvalue_shrink == true) {
         mixvalue -= 0.02f;
     }
+
+    float cursor_x_diff = last_cursor_x - current_cursor_x;
+    last_cursor_x = current_cursor_x;
+    float cursor_y_diff = last_cursor_y - current_cursor_y;
+    last_cursor_y = current_cursor_y;
+
+    yaw -= 0.03f * cursor_x_diff;
+    pitch += 0.03f * cursor_y_diff;
+
+    if (pitch < -89.95f) {
+        pitch = -89.95f;
+    }
+    if (pitch > 89.95f) {
+        pitch = 89.95f;
+    }
+
 }

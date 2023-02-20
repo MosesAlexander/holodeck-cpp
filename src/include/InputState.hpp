@@ -45,9 +45,6 @@ struct InputState {
 	bool z_rot_cwise = false;
 	bool z_rot_ccwise = false;
 	bool reset_all_angles = false;
-	bool zoom_in = false;
-	bool zoom_out = false;
-	bool reset_zoom = false;
 	bool mixvalue_grow = false;
 	bool mixvalue_shrink = false;
 
