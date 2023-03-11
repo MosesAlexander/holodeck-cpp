@@ -1,4 +1,5 @@
 {
+    "object_name" : "LightCube",
     "object_type" : "Cube",
     "resources" : {
         "uniforms" : [

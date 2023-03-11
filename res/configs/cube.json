@@ -1,4 +1,5 @@
 {
+    "object_name" : "Cube",
     "object_type" : "Cube",
     "resources" : {
         "uniforms" : [
