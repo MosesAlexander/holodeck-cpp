@@ -78,10 +78,14 @@ void Application::render_models() {
 		inputState.process_input(window);
 
 		auto model = glm::mat4(1.0f);
-		auto rotate_about_x_axis = glm::rotate(model, M_PIf * inputState.x_angle_multiplier, glm::vec3(1.0f, 0.0f, 0.0f));
-		auto rotate_about_y_axis = glm::rotate(model, M_PIf * inputState.y_angle_multiplier, glm::vec3(0.0f, 1.0f, 0.0f));
-		auto rotate_about_z_axis = glm::rotate(model, M_PIf * inputState.z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
-		auto translation_matrix = glm::translate(model, glm::vec3(inputState.cur_off_x, inputState.cur_off_y, inputState.cur_off_z));
+		auto rotate_about_x_axis = glm::rotate(
+			model, M_PIf * inputState.x_angle_multiplier, glm::vec3(1.0f, 0.0f, 0.0f));
+		auto rotate_about_y_axis = glm::rotate(
+			model, M_PIf * inputState.y_angle_multiplier, glm::vec3(0.0f, 1.0f, 0.0f));
+		auto rotate_about_z_axis = glm::rotate(
+			model, M_PIf * inputState.z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
+		auto translation_matrix = glm::translate(
+			model, glm::vec3(inputState.cur_off_x, inputState.cur_off_y, inputState.cur_off_z));
 
 
 		// Gram-Schmidt process
