@@ -63,3 +63,7 @@ void CameraState::update(const InputState &is) {
 
     LookAt = mat_A * mat_B;
 }
+
+void CameraState::setInitialPos(const InputState &is) {
+    camera_position = glm::vec3(is.camera_cur_off_x, is.camera_cur_off_y, is.camera_cur_off_z);
+}

@@ -277,12 +277,7 @@ void Holodeck::render_models() {
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	glm::mat4 perspective_projection_matrix = glm::perspective(
-			glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
-
-	auto camera_position = glm::vec3(inputState.camera_cur_off_x,
-									inputState.camera_cur_off_y,
-									inputState.camera_cur_off_z);
+	cameraState.setInitialPos(inputState);
 
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
