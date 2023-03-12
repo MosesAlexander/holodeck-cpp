@@ -12,17 +12,13 @@
         ],
         "shaders" : [
             {
-                "filepath" : "src/shaders/cube.vert",
+                "filepath" : "src/shaders/light_cube.vert",
                 "shader_type" : "VERTEX_SHADER"
             },
             {
-                "filepath" : "src/shaders/cube.frag",
+                "filepath" : "src/shaders/light_cube.frag",
                 "shader_type" : "FRAGMENT_SHADER"
             }
-        ],
-        "textures" : [
-            { "name" : "texture1", "path" : "res/textures/stallman.jpg", "format" : "RGB" },
-            { "name" : "texture2", "path" : "res/textures/gnu.png", "format" : "RGBA" }
         ]
     },
     "attributes" : {
@@ -31,7 +27,7 @@
         "component_types" : ["GL_FLOAT", "GL_FLOAT", "GL_FLOAT"],
         "component_offsets" : [0, 3],
         "component_strides" : [5, 5],
-        "center" : [0.0, 0.0, 0.0],
-        "side_length" : 0.1
+        "center" : [0.0, 0.65, 0.0],
+        "side_length" : 0.05
     }
 }
