@@ -40,7 +40,7 @@ TextManager::TextManager(Program *program) {
 
     if (init()) {
         std::cerr<<"There was a problem initializing TextManager"<<std::endl;
-        throw application_exception("There was a problem initializing TextManager");
+        throw holodeck_exception("There was a problem initializing TextManager");
     }
 }
 

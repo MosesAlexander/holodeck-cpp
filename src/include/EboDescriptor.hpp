@@ -1,7 +1,7 @@
 #ifndef EBO_HEADERFILE_H
 #define EBO_HEADERFILE_H
 
-#include "Application.hpp"
+#include "Holodeck.hpp"
 using namespace std;
 
 struct EboDescriptor {

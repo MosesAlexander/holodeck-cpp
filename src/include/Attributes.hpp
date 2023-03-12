@@ -1,7 +1,7 @@
 #ifndef ATTR_HEADERFILE_H
 #define ATTR_HEADERFILE_H
 
-#include "Application.hpp"
+#include "Holodeck.hpp"
 using namespace std;
 
 struct AttributesDescriptor {

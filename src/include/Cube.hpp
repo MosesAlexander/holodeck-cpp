@@ -1,7 +1,7 @@
 #ifndef CUBE_HEADERFILE_H
 #define CUBE_HEADERFILE_H
 
-#include "Application.hpp"
+#include "Holodeck.hpp"
 
 enum class CubeCorner {
     COORDS_A,

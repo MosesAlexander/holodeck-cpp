@@ -1,7 +1,7 @@
 #ifndef BUFFERDESCRIPTOR_HEADERFILE_H
 #define BUFFERDESCRIPTOR_HEADERFILE_H
 
-#include "Application.hpp"
+#include "Holodeck.hpp"
 
 using namespace std;
 

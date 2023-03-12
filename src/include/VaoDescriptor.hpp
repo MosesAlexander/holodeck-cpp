@@ -4,7 +4,7 @@
 #include "BufferDescriptor.hpp"
 #include "EboDescriptor.hpp"
 #include "Attributes.hpp"
-#include "Application.hpp"
+#include "Holodeck.hpp"
 
 struct EboDescriptor;
 

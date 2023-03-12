@@ -3,7 +3,6 @@
 
 #include "Uniform.hpp"
 #include "BufferDescriptor.hpp"
-//#include "Application.hpp"
 #include "VaoDescriptor.hpp"
 #include "Texture.hpp"
 #include "Program.hpp"

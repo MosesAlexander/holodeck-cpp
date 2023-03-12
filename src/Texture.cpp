@@ -37,7 +37,7 @@ TextureDescriptor::TextureDescriptor(GLuint bound_program_id,
 
     if (!buffer) {
         cerr<<"Failed to load texture!"<<endl;
-        throw application_exception("Failed to load texture!");
+        throw holodeck_exception("Failed to load texture!");
     }
 
     glTexImage2D(

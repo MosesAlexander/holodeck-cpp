@@ -1,4 +1,4 @@
-#include "Application.hpp"
+#include "Holodeck.hpp"
 #include "Program.hpp"
 #include "Attributes.hpp"
 #include "Cube.hpp"
@@ -8,11 +8,11 @@
 
 int main() {
 	try {
-		Application app;
+		Holodeck deck;
 		int ret = 0;
 
-		app.generate_configs_from_json_dir("res/configs/");
-		ret = app.generate_models_from_configs();
+		deck.generate_configs_from_json_dir("res/configs/");
+		ret = deck.generate_models_from_configs();
 		if (ret < 0) {
 			cerr << "Error generating models from configs"<<endl;
 			return -1;
@@ -34,11 +34,11 @@ int main() {
 
 		TextManager text_manager(&program_text);
 
-		app.attach_text_manager(std::move(text_manager));
+		deck.attach_text_manager(std::move(text_manager));
 
-		app.render_models();
+		deck.render_models();
 	} catch (std::exception &e) {
-		std::cerr<<"Application error! "<<e.what()<<std::endl;
+		std::cerr<<"Holodeck error! "<<e.what()<<std::endl;
 		return -1;
 	}
 

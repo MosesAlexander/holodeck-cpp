@@ -1,5 +1,5 @@
 add_executable(holodeck main.cpp
-                        Application.cpp
+                        Holodeck.cpp
                         BufferDescriptor.cpp
                         EboDescriptor.cpp
                         VaoDescriptor.cpp

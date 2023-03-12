@@ -1,10 +1,10 @@
-#include "Application.hpp"
+#include "Holodeck.hpp"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-int Application::init_window() {
+int Holodeck::init_window() {
 	int ret = 0;
 	if (GL_TRUE != glfwInit()) {
 		std::cerr<<"Error initializing!"<<std::endl;
@@ -14,7 +14,7 @@ int Application::init_window() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	window = glfwCreateWindow(1920, 1080, "MyOpenGL", NULL, NULL);
+	window = glfwCreateWindow(1920, 1080, "Holodeck", NULL, NULL);
 	if (window == NULL) {
 		std::cerr<<"Failed to create GLFW window" <<std::endl;
 		glfwTerminate();
@@ -44,13 +44,13 @@ err:
 	return ret;
 }
 
-Application::Application() {
+Holodeck::Holodeck() {
 	if(init_window()) {
-		throw application_exception("Failed to initialize window");
+		throw holodeck_exception("Failed to initialize window");
 	}
 }
 
-void Application::render_models() {
+void Holodeck::render_models() {
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -358,15 +358,15 @@ void Application::render_models() {
 	}
 }
 
-void Application::add_model(Model&& model) {
+void Holodeck::add_model(Model&& model) {
 	models.push_back(std::move(model));
 }
 
-void Application::attach_text_manager(TextManager&& text_manager) {
+void Holodeck::attach_text_manager(TextManager&& text_manager) {
 	this->text_manager = std::move(text_manager);
 }
 
-void Application::generate_configs_from_json_dir(string dir_path)
+void Holodeck::generate_configs_from_json_dir(string dir_path)
 {
     for (const auto & entry : fs::directory_iterator(dir_path))
     {
@@ -436,7 +436,7 @@ transform_type parse_transform_type(string transf_type_str) {
 	return transform_type::undefined;
 }
 
-int Application::generate_models_from_configs() {
+int Holodeck::generate_models_from_configs() {
 	for (auto json_conf : world_configs) {
 		vector<float> vertices;
 		vector<GLuint> indices;

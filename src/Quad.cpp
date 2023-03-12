@@ -67,7 +67,7 @@ Quad::Quad(float width, float height, float *center_offset, float *center, Scale
         vertices.insert(std::end(vertices), std::begin(temp_tex), std::end(temp_tex));
     } else {
         cerr<<"ERROR: only simple offset vectors accepted"<<endl;
-        throw application_exception("ERROR: only simple offset vectors accepted!");
+        throw holodeck_exception("ERROR: only simple offset vectors accepted!");
     }
 
     indices = {0,1,2,1,3,2};

@@ -13,7 +13,7 @@ VaoDescriptor::VaoDescriptor(AttributesDescriptor *attr,
     ret = set_attributes<float>(attr);
     if(ret < 0) {
         cerr<<"Failure to set attributes to VAO"<<endl;
-        throw application_exception("Failure to set attributes to VAO");
+        throw holodeck_exception("Failure to set attributes to VAO");
     }
 }
 

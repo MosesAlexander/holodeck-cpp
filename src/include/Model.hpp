@@ -1,7 +1,7 @@
 #ifndef MODEL_HEADERFILE_H
 #define MODEL_HEADERFILE_H
 
-#include "Application.hpp"
+#include "Holodeck.hpp"
 #include "Mesh.hpp"
 #include "Program.hpp"
 #include "JsonConfig.hpp"

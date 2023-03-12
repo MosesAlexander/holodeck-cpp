@@ -2,7 +2,7 @@
 #define QUAD_HEADERFILE_H
 
 #include "Cube.hpp"
-#include "Application.hpp"
+#include "Holodeck.hpp"
 
 struct ScaleFactor;
 

@@ -51,7 +51,7 @@ Shader::Shader(const char *source, GLenum kind) {
         std::cerr<<"Error compiling shader:"<<endl<<error<<endl;
         free(error);
 
-        throw application_exception("Failed to compile shader!");
+        throw holodeck_exception("Failed to compile shader!");
     }
 }
 

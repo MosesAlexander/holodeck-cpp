@@ -27,6 +27,7 @@
 #include "Quad.hpp"
 #include "InputState.hpp"
 #include "TransformState.hpp"
+#include "CameraState.hpp"
 
 struct Model;
 struct TextManager;
@@ -34,12 +35,12 @@ struct TextManager;
 using namespace std;
 namespace fs = std::filesystem;
 
-class Application
+class Holodeck
 {
 public:
-	Application();
+	Holodeck();
 	void render_loop();
-	~Application() { glfwTerminate(); }
+	~Holodeck() { glfwTerminate(); }
 	void render_models();
 	void add_model(Model&& model);
 	void attach_text_manager(TextManager&&);
@@ -52,6 +53,7 @@ private:
 	vector<JsonConfig> world_configs;
 	InputState inputState;
 	TransformState transformState;
+	CameraState cameraState;
     int init_window();
 	bool is_initialized = false;
 };
