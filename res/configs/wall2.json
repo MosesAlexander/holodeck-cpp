@@ -1,4 +1,5 @@
 {
+    "object_name" : "Wall2",
     "object_type" : "Wall",
     "resources" : {
         "uniforms" : [

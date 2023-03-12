@@ -1,8 +1,8 @@
 #include "TextManager.hpp"
 
 TextManager::TextManager(Program *program) {
-    UniformDescriptor text_uniform(program->id, "textColor", uniform_type::Uniform3FParam);
-    UniformDescriptor text_projection_uniform(program->id, "projection", uniform_type::Uniform4FVMatrix); 
+    UniformDescriptor text_uniform(program->id, "textColor", uniform_type::Uniform3FParam, transform_type::textColor);
+    UniformDescriptor text_projection_uniform(program->id, "projection", uniform_type::Uniform4FVMatrix, transform_type::projection); 
     this->text_uniform = text_uniform;
     this->text_projection_uniform = text_projection_uniform;
     this->program = program;

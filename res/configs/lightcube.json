@@ -1,6 +1,6 @@
 {
     "object_name" : "LightCube",
-    "object_type" : "Cube",
+    "object_type" : "LightCube",
     "resources" : {
         "uniforms" : [
             { "uniform_name" : "projection", "uniform_type" : "mat4f" },

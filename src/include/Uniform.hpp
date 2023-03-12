@@ -15,6 +15,19 @@ enum class uniform_type {
     Undefined
 };
 
+enum class transform_type {
+    rotate_x,
+    rotate_y,
+    rotate_z,
+    translate,
+    projection,
+    look_at,
+    lightColor,
+    mixvalue,
+    textColor,
+    undefined
+};
+
 struct UniformPackedParam {
     uniform_type type;
     union {
@@ -28,8 +41,9 @@ struct UniformPackedParam {
 struct UniformDescriptor {
     GLint uniform_shader_handle;
     uniform_type type;
+    transform_type transf_type;
 
-    UniformDescriptor(GLuint program_id, const char *uniform_name, uniform_type type);
+    UniformDescriptor(GLuint program_id, const char *uniform_name, uniform_type type, transform_type transf_type);
     UniformDescriptor(UniformDescriptor&&);
     UniformDescriptor() : uniform_shader_handle(0) {};
     UniformDescriptor& operator=(const UniformDescriptor&);

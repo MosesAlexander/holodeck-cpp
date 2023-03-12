@@ -4,8 +4,8 @@ void Model::add_mesh(Mesh&& mesh) {
     meshes.push_back(std::move(mesh));
 }
 
-void Model::attach_program(Program *program) {
-    this->program = program;
+void Model::attach_program(const Program &program) {
+    this->program_id = program.id;
 }
 
 void Model::render() {
@@ -20,15 +20,16 @@ void Model::render() {
 }
 
 void Model::use_program() {
-    glUseProgram(program->id);
+    glUseProgram(program_id);
 }
 
 Model::Model(Model&& source) {
     meshes = std::move(source.meshes);
-    program = source.program;
-    source.program = nullptr;
+    program_id = source.program_id;
+    source.program_id = 0;
+    model_name = source.model_name;
+    obj_type = source.obj_type;
 }
 
 Model::Model() {
-    program = nullptr;
 }

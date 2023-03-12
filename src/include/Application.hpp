@@ -44,9 +44,9 @@ public:
 	void attach_text_manager(TextManager&&);
 	void generate_configs_from_json_dir(string directory);
 	int generate_models_from_configs();
+	vector<Model> models;
 private:
     GLFWwindow *window;
-	vector<Model> models;
 	TextManager text_manager;
 	vector<JsonConfig> world_configs;
 	InputState inputState;

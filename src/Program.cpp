@@ -8,7 +8,7 @@ Program::Program() {
 };
 
 Program::~Program() {
-    glDeleteProgram(id);
+    //glDeleteProgram(id);
 }
 
 void Program::add_shader(Shader *shader) {

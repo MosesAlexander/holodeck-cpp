@@ -18,6 +18,10 @@ int main() {
 			return -1;
 		}
 
+		for (auto &model : app.models) {
+			std::cout<< model.model_name << std::endl;
+		}
+
 		// Text manager setup
 		Shader vert_shader_text("src/shaders/text.vert", GL_VERTEX_SHADER);
 		Shader frag_shader_text("src/shaders/text.frag", GL_FRAGMENT_SHADER);

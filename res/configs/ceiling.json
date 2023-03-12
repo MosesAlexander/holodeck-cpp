@@ -1,5 +1,5 @@
 {
-    "object _name" : "Ceiling",
+    "object_name" : "Ceiling",
     "object_type" : "Floor",
     "resources" : {
         "uniforms" : [

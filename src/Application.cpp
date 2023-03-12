@@ -54,19 +54,8 @@ void Application::render_models() {
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	models[0].use_program();
-
 	glm::mat4 perspective_projection_matrix = glm::perspective(
 			glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
-
-	models[0].meshes[0].uniforms[5].update(
-		std::move(
-			UniformPackedParam{
-				type: uniform_type::Uniform4FVMatrix,
-				parammat: perspective_projection_matrix
-			}
-		)
-	);
 
 	auto camera_position = glm::vec3(inputState.camera_cur_off_x,
 									inputState.camera_cur_off_y,
@@ -77,15 +66,15 @@ void Application::render_models() {
 		
 		inputState.process_input(window);
 
-		auto model = glm::mat4(1.0f);
+		auto model_mat = glm::mat4(1.0f);
 		auto rotate_about_x_axis = glm::rotate(
-			model, M_PIf * inputState.x_angle_multiplier, glm::vec3(1.0f, 0.0f, 0.0f));
+			model_mat, M_PIf * inputState.x_angle_multiplier, glm::vec3(1.0f, 0.0f, 0.0f));
 		auto rotate_about_y_axis = glm::rotate(
-			model, M_PIf * inputState.y_angle_multiplier, glm::vec3(0.0f, 1.0f, 0.0f));
+			model_mat, M_PIf * inputState.y_angle_multiplier, glm::vec3(0.0f, 1.0f, 0.0f));
 		auto rotate_about_z_axis = glm::rotate(
-			model, M_PIf * inputState.z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
+			model_mat, M_PIf * inputState.z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
 		auto translation_matrix = glm::translate(
-			model, glm::vec3(inputState.cur_off_x, inputState.cur_off_y, inputState.cur_off_z));
+			model_mat, glm::vec3(inputState.cur_off_x, inputState.cur_off_y, inputState.cur_off_z));
 
 
 		// Gram-Schmidt process
@@ -150,164 +139,224 @@ void Application::render_models() {
 
 		auto LookAt = mat_A * mat_B;
 
-		models[0].use_program();
+		for (auto& model : models) {
+			model.use_program();
+			switch(model.obj_type) {
+			case object_type::Cube:
+			{
+				model.meshes[0].textures[0].set_active_texture(0);
+				model.meshes[0].textures[1].set_active_texture(1);
 
-		models[0].meshes[0].textures[0].set_active_texture(0);
-		models[0].meshes[0].textures[1].set_active_texture(1);
+				for (auto& mesh : model.meshes) {
+					for (auto& uniform : mesh.uniforms) {
+						switch(uniform.transf_type) {
+						case transform_type::rotate_x:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: rotate_about_x_axis
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::rotate_y:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: rotate_about_y_axis
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::rotate_z:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: rotate_about_z_axis
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::translate:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: translation_matrix
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::mixvalue:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform1FParam,
+										param1f: inputState.mixvalue
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::projection:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: perspective_projection_matrix
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::look_at:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: LookAt
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::lightColor:
+						{
+							uniform.update(
+								UniformPackedParam{
+									type: uniform_type::Uniform3FParam,
+									param3f: {1.0f, 1.0f, 1.0f}
+								}
+							);
+						}
+						break;
+						}
+					}
 
-		for (auto& mesh : models[0].meshes) {
-			mesh.uniforms[0].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: rotate_about_x_axis
-					}
-				)
-			);
-			mesh.uniforms[1].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: rotate_about_y_axis
-					}
-				)
-			);
-			mesh.uniforms[2].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: rotate_about_z_axis
-					}
-				)
-			);
-			mesh.uniforms[3].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: translation_matrix
-					}
-				)
-			);
-			mesh.uniforms[4].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform1FParam,
-						param1f: inputState.mixvalue
-					}
-				)
-			);
-			mesh.uniforms[6].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: LookAt
-					}
-				)
-			);
-
-			mesh.uniforms[7].update(
-				UniformPackedParam{
-					type: uniform_type::Uniform3FParam,
-					param3f: {1.0f, 1.0f, 1.0f}
+					mesh.bind_vao();
+					mesh.render();
 				}
-			);
-
-			mesh.bind_vao();
-			mesh.render();
-		}
-
-		for (auto model_idx = 1; model_idx < (models.size() - 1); model_idx++) {
-			models[model_idx].use_program();
-			for (auto& mesh : models[model_idx].meshes) {
-				mesh.bind_vao();
-				if (mesh.textures.size() > 0)
-					mesh.textures[0].set_active_texture(0);
-
-				mesh.uniforms[0].update(
-					std::move(
-						UniformPackedParam{
-							type: uniform_type::Uniform4FVMatrix,
-							parammat: perspective_projection_matrix
-						}
-					)
-				);
-
-				mesh.uniforms[1].update(
-					std::move(
-						UniformPackedParam{
-							type: uniform_type::Uniform4FVMatrix,
-							parammat: LookAt
-						}
-					)
-				);
-
-				mesh.uniforms[2].update(
-					std::move(
-						UniformPackedParam{
-							type: uniform_type::Uniform3FParam,
-							param3f: {1.0f, 1.0f, 1.0f}
-						}
-					)
-				);
 			}
-			models[model_idx].render();
-		}
+			break;
+			case object_type::Wall:
+			case object_type::Floor:
+			{
+				for (auto& mesh : model.meshes) {
+					mesh.bind_vao();
+					if (mesh.textures.size() > 0)
+						mesh.textures[0].set_active_texture(0);
 
-		// Light cube
-		models[7].use_program();
+					for (auto& uniform: mesh.uniforms) {
+						switch(uniform.transf_type) {
+						case transform_type::projection:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: perspective_projection_matrix
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::look_at:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: LookAt
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::lightColor:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform3FParam,
+										param3f: {1.0f, 1.0f, 1.0f}
+									}
+								)
+							);
+						}
+						break;
+						}
+					}
+				}
+				model.render();
+			}
+			break;
+			case object_type::LightCube:
+			{
+				for (auto& mesh : model.meshes) {
+					for (auto& uniform : mesh.uniforms) {
+						switch(uniform.transf_type) {
+						case transform_type::rotate_x:
+						case transform_type::rotate_y:
+						case transform_type::rotate_z:
+						case transform_type::translate:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: glm::mat4(1.0f)
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::projection:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: perspective_projection_matrix
+									}
+								)
+							);
+						}
+						break;
+						case transform_type::look_at:
+						{
+							uniform.update(
+								std::move(
+									UniformPackedParam{
+										type: uniform_type::Uniform4FVMatrix,
+										parammat: LookAt
+									}
+								)
+							);
+						}
+						break;
+						}
+					}
 
-		for (auto& mesh : models[7].meshes) {
-			mesh.uniforms[0].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: glm::mat4(1.0f)
-					}
-				)
-			);
-			mesh.uniforms[1].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: glm::mat4(1.0f)
-					}
-				)
-			);
-			mesh.uniforms[2].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: glm::mat4(1.0f)
-					}
-				)
-			);
-			mesh.uniforms[3].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: glm::mat4(1.0f)
-					}
-				)
-			);
-			mesh.uniforms[4].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: perspective_projection_matrix
-					}
-				)
-			);
-			mesh.uniforms[5].update(
-				std::move(
-					UniformPackedParam{
-						type: uniform_type::Uniform4FVMatrix,
-						parammat: LookAt
-					}
-				)
-			);
-
-			mesh.bind_vao();
-			mesh.render();
+					mesh.bind_vao();
+					mesh.render();
+				}
+			}
+			break;
+			}
 		}
 
 		//text_manager.render_text(string("Greetings mortals"), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
@@ -374,6 +423,27 @@ uniform_type parse_uniform_type(string type_str) {
 	return uniform_type::Undefined;
 }
 
+transform_type parse_transform_type(string transf_type_str) {
+	if (transf_type_str == "rotate_about_x")
+		return transform_type::rotate_x;
+	if (transf_type_str == "rotate_about_y")
+		return transform_type::rotate_y;
+	if (transf_type_str == "rotate_about_z")
+		return transform_type::rotate_z;
+	if (transf_type_str == "translate")
+		return transform_type::translate;
+	if (transf_type_str == "mixvalue")
+		return transform_type::mixvalue;
+	if (transf_type_str == "projection")
+		return transform_type::projection;
+	if (transf_type_str == "look_at")
+		return transform_type::look_at;
+	if (transf_type_str == "lightColor")
+		return transform_type::lightColor;
+
+	return transform_type::undefined;
+}
+
 int Application::generate_models_from_configs() {
 	for (auto json_conf : world_configs) {
 		vector<float> vertices;
@@ -382,6 +452,7 @@ int Application::generate_models_from_configs() {
 		switch(json_conf.get_object_type())
 		{
 			case object_type::Cube:
+			case object_type::LightCube:
 			{
 				auto center_vec = json_conf.mData["attributes"]["center"].get<vector<float>>();
 				float side_length = json_conf.mData["attributes"]["side_length"].get<float>();
@@ -428,7 +499,6 @@ int Application::generate_models_from_configs() {
 			break;
 		}
 
-		cout << "Found a cube"<<endl;
 		vector<Shader> shaders;
 		for (auto &shader_json : json_conf.mData["resources"]["shaders"])
 		{
@@ -484,14 +554,17 @@ int Application::generate_models_from_configs() {
 			UniformDescriptor uniform_desc(
 				program.id,
 				uniform_json["uniform_name"].get<string>().c_str(),
-				parse_uniform_type(uniform_json["uniform_type"].get<string>())
+				parse_uniform_type(uniform_json["uniform_type"].get<string>()),
+				parse_transform_type(uniform_json["uniform_name"].get<string>())
 			);
 			mesh.add_uniform(std::move(uniform_desc));
 		}
 
 		Model model;
+		model.model_name = json_conf.mData["object_name"].get<string>();
+		model.obj_type = json_conf.get_object_type();
 		model.add_mesh(std::move(mesh));
-		model.attach_program(&program);
+		model.attach_program(program);
 		
 		add_model(std::move(model));
 
