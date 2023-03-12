@@ -15,6 +15,7 @@ add_executable(holodeck main.cpp
                         JsonConfig.cpp
                         InputState.cpp
                         TransformState.cpp
+                        CameraState.cpp
                         glad.c)
 
 project(holodeck)

@@ -45,6 +45,7 @@ public:
 	void add_model(Model&& model);
 	void attach_text_manager(TextManager&&);
 	void generate_configs_from_json_dir(string directory);
+	void updateModels();
 	int generate_models_from_configs();
 private:
 	vector<Model> models;

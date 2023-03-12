@@ -50,6 +50,229 @@ Holodeck::Holodeck() {
 	}
 }
 
+void Holodeck::updateModels() {
+	for (auto& model : models) {
+		model.use_program();
+		switch(model.obj_type) {
+		case object_type::Cube:
+		{
+			model.meshes[0].textures[0].set_active_texture(0);
+			model.meshes[0].textures[1].set_active_texture(1);
+
+			for (auto& mesh : model.meshes) {
+				for (auto& uniform : mesh.uniforms) {
+					switch(uniform.transf_type) {
+					case transform_type::rotate_x:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: transformState.rotate_about_x_axis
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::rotate_y:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: transformState.rotate_about_y_axis
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::rotate_z:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: transformState.rotate_about_z_axis
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::translate:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: transformState.translation_matrix
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::mixvalue:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform1FParam,
+									param1f: inputState.mixvalue
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::projection:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: cameraState.perspective_projection_matrix
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::look_at:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: cameraState.LookAt
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::lightColor:
+					{
+						uniform.update(
+							UniformPackedParam{
+								type: uniform_type::Uniform3FParam,
+								param3f: {1.0f, 1.0f, 1.0f}
+							}
+						);
+					}
+					break;
+					}
+				}
+
+				mesh.bind_vao();
+				mesh.render();
+			}
+		}
+		break;
+		case object_type::Wall:
+		case object_type::Floor:
+		{
+			for (auto& mesh : model.meshes) {
+				mesh.bind_vao();
+				if (mesh.textures.size() > 0)
+					mesh.textures[0].set_active_texture(0);
+
+				for (auto& uniform: mesh.uniforms) {
+					switch(uniform.transf_type) {
+					case transform_type::projection:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: cameraState.perspective_projection_matrix
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::look_at:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: cameraState.LookAt
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::lightColor:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform3FParam,
+									param3f: {1.0f, 1.0f, 1.0f}
+								}
+							)
+						);
+					}
+					break;
+					}
+				}
+			}
+			model.render();
+		}
+		break;
+		case object_type::LightCube:
+		{
+			for (auto& mesh : model.meshes) {
+				for (auto& uniform : mesh.uniforms) {
+					switch(uniform.transf_type) {
+					case transform_type::rotate_x:
+					case transform_type::rotate_y:
+					case transform_type::rotate_z:
+					case transform_type::translate:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: glm::mat4(1.0f)
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::projection:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: cameraState.perspective_projection_matrix
+								}
+							)
+						);
+					}
+					break;
+					case transform_type::look_at:
+					{
+						uniform.update(
+							std::move(
+								UniformPackedParam{
+									type: uniform_type::Uniform4FVMatrix,
+									parammat: cameraState.LookAt
+								}
+							)
+						);
+					}
+					break;
+					}
+				}
+
+				mesh.bind_vao();
+				mesh.render();
+			}
+		}
+		break;
+		}
+	}
+
+}
+
 void Holodeck::render_models() {
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -66,290 +289,8 @@ void Holodeck::render_models() {
 		
 		inputState.process_input(window);
 		transformState.update(inputState);
-
-
-
-		// Gram-Schmidt process
-		// Positive Z axis leads outside the screen
-		auto direction = glm::vec3(0.0f, 0.0f, 0.0f);
-		direction.x = cos(glm::radians(inputState.yaw)) * cos(glm::radians(inputState.pitch));
-		direction.y = sin(glm::radians(inputState.pitch));
-		direction.z = sin(glm::radians(inputState.yaw)) * cos(glm::radians(inputState.pitch));
-
-		auto camera_front = glm::normalize(direction);
-
-		if (inputState.camera_moving_forwards == true) {
-			camera_position += camera_front * 0.02f;
-		}
-
-		if (inputState.camera_moving_backwards == true) {
-			camera_position -= camera_front * 0.02f;
-		}
-
-		camera_position.y= 0.2f;
-
-		auto camera_target = camera_position + camera_front;
-		auto camera_direction = glm::normalize(camera_position - camera_target);
-		auto c_up = glm::vec3(0.0f, 1.0f, 0.0f);
-		auto camera_right = glm::normalize(glm::cross(c_up, camera_direction));
-		auto camera_up = glm::cross(camera_direction, camera_right);
-
-		if (inputState.camera_moving_left == true) {
-			camera_position -= camera_right * 0.009f;
-		}
-
-		if (inputState.camera_moving_right == true) {
-			camera_position += camera_right * 0.009f;
-		}
-
-		if (inputState.camera_moving_down == true) {
-			camera_position.y -= 0.02f;
-			if (camera_position.y < 0.2f) {
-				camera_position.y = 0.2f;
-			}
-		}
-
-		if (inputState.camera_moving_up == true) {
-			camera_position.y += 0.02f;
-		}
-
-		//auto LookAt = glm::lookAt(camera_position, camera_direction, camera_up);
-		auto mat_A = glm::mat4(
-			glm::vec4(camera_right, 0.0f),
-			glm::vec4(camera_up, 0.0f),
-			glm::vec4(camera_direction, 0.0f),
-			glm::vec4(0.0f,0.0f,0.0f,1.0f)
-		);
-
-		mat_A = glm::transpose(mat_A);
-		auto mat_B = glm::mat4(
-			glm::vec4(1.0f, 0.0f, 0.0f, 0.0f),
-			glm::vec4(0.0f, 1.0f, 0.0f, 0.0f),
-			glm::vec4(0.0f, 0.0f, 1.0f, 0.0f),
-			glm::vec4(-camera_position, 1.0f)
-		);
-
-		auto LookAt = mat_A * mat_B;
-
-		for (auto& model : models) {
-			model.use_program();
-			switch(model.obj_type) {
-			case object_type::Cube:
-			{
-				model.meshes[0].textures[0].set_active_texture(0);
-				model.meshes[0].textures[1].set_active_texture(1);
-
-				for (auto& mesh : model.meshes) {
-					for (auto& uniform : mesh.uniforms) {
-						switch(uniform.transf_type) {
-						case transform_type::rotate_x:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: transformState.rotate_about_x_axis
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::rotate_y:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: transformState.rotate_about_y_axis
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::rotate_z:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: transformState.rotate_about_z_axis
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::translate:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: transformState.translation_matrix
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::mixvalue:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform1FParam,
-										param1f: inputState.mixvalue
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::projection:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: perspective_projection_matrix
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::look_at:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: LookAt
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::lightColor:
-						{
-							uniform.update(
-								UniformPackedParam{
-									type: uniform_type::Uniform3FParam,
-									param3f: {1.0f, 1.0f, 1.0f}
-								}
-							);
-						}
-						break;
-						}
-					}
-
-					mesh.bind_vao();
-					mesh.render();
-				}
-			}
-			break;
-			case object_type::Wall:
-			case object_type::Floor:
-			{
-				for (auto& mesh : model.meshes) {
-					mesh.bind_vao();
-					if (mesh.textures.size() > 0)
-						mesh.textures[0].set_active_texture(0);
-
-					for (auto& uniform: mesh.uniforms) {
-						switch(uniform.transf_type) {
-						case transform_type::projection:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: perspective_projection_matrix
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::look_at:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: LookAt
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::lightColor:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform3FParam,
-										param3f: {1.0f, 1.0f, 1.0f}
-									}
-								)
-							);
-						}
-						break;
-						}
-					}
-				}
-				model.render();
-			}
-			break;
-			case object_type::LightCube:
-			{
-				for (auto& mesh : model.meshes) {
-					for (auto& uniform : mesh.uniforms) {
-						switch(uniform.transf_type) {
-						case transform_type::rotate_x:
-						case transform_type::rotate_y:
-						case transform_type::rotate_z:
-						case transform_type::translate:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: glm::mat4(1.0f)
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::projection:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: perspective_projection_matrix
-									}
-								)
-							);
-						}
-						break;
-						case transform_type::look_at:
-						{
-							uniform.update(
-								std::move(
-									UniformPackedParam{
-										type: uniform_type::Uniform4FVMatrix,
-										parammat: LookAt
-									}
-								)
-							);
-						}
-						break;
-						}
-					}
-
-					mesh.bind_vao();
-					mesh.render();
-				}
-			}
-			break;
-			}
-		}
+		cameraState.update(inputState);
+		updateModels();
 
 		//text_manager.render_text(string("Greetings mortals"), 25.0f, 25.0f, 1.0f, glm::vec3(0.5f, 0.8f, 0.2f));
 		
