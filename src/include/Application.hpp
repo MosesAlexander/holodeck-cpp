@@ -26,6 +26,7 @@
 #include "Cube.hpp"
 #include "Quad.hpp"
 #include "InputState.hpp"
+#include "TransformState.hpp"
 
 struct Model;
 struct TextManager;
@@ -44,12 +45,13 @@ public:
 	void attach_text_manager(TextManager&&);
 	void generate_configs_from_json_dir(string directory);
 	int generate_models_from_configs();
-	vector<Model> models;
 private:
+	vector<Model> models;
     GLFWwindow *window;
 	TextManager text_manager;
 	vector<JsonConfig> world_configs;
 	InputState inputState;
+	TransformState transformState;
     int init_window();
 	bool is_initialized = false;
 };

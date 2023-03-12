@@ -65,16 +65,8 @@ void Application::render_models() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		inputState.process_input(window);
+		transformState.update(inputState);
 
-		auto model_mat = glm::mat4(1.0f);
-		auto rotate_about_x_axis = glm::rotate(
-			model_mat, M_PIf * inputState.x_angle_multiplier, glm::vec3(1.0f, 0.0f, 0.0f));
-		auto rotate_about_y_axis = glm::rotate(
-			model_mat, M_PIf * inputState.y_angle_multiplier, glm::vec3(0.0f, 1.0f, 0.0f));
-		auto rotate_about_z_axis = glm::rotate(
-			model_mat, M_PIf * inputState.z_angle_multiplier, glm::vec3(0.0f, 0.0f, 1.0f));
-		auto translation_matrix = glm::translate(
-			model_mat, glm::vec3(inputState.cur_off_x, inputState.cur_off_y, inputState.cur_off_z));
 
 
 		// Gram-Schmidt process
@@ -156,7 +148,7 @@ void Application::render_models() {
 								std::move(
 									UniformPackedParam{
 										type: uniform_type::Uniform4FVMatrix,
-										parammat: rotate_about_x_axis
+										parammat: transformState.rotate_about_x_axis
 									}
 								)
 							);
@@ -168,7 +160,7 @@ void Application::render_models() {
 								std::move(
 									UniformPackedParam{
 										type: uniform_type::Uniform4FVMatrix,
-										parammat: rotate_about_y_axis
+										parammat: transformState.rotate_about_y_axis
 									}
 								)
 							);
@@ -180,7 +172,7 @@ void Application::render_models() {
 								std::move(
 									UniformPackedParam{
 										type: uniform_type::Uniform4FVMatrix,
-										parammat: rotate_about_z_axis
+										parammat: transformState.rotate_about_z_axis
 									}
 								)
 							);
@@ -192,7 +184,7 @@ void Application::render_models() {
 								std::move(
 									UniformPackedParam{
 										type: uniform_type::Uniform4FVMatrix,
-										parammat: translation_matrix
+										parammat: transformState.translation_matrix
 									}
 								)
 							);
