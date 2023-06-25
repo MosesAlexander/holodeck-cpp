@@ -1,2 +1,17 @@
-I started an OpenGL project in RUST, after a while I got annoyed enough to
-want to switch to C++. Now here we are.
+I made this openGL project in Rust a while ago and then I got angry with
+Rust and decided to rewrite it in C++.
+
+I got bored of it around the time I was going to implement shadows and proper
+light sources. You can pick it up and do whatever with it.
+
+To build:
+mkdir build
+cd build
+cmake ..
+make -j8
+cd ..
+./build/src/holodeck
+
+The last one is because it looks for resources at a relative path from the top level
+of the repository.
+
